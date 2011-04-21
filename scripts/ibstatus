@@ -7,6 +7,10 @@ def_ibdev="mthca0"
 
 usage() {
 	prog=`basename $0`
+
+	echo ""
+	echo "*** WARNING ***: this command is deprecated; Please use \"ibstat\""
+
 	echo "Usage: " $prog " [-h] [devname[:portnum]]"
 	echo "	-h:	this help screen"
 	echo "	Examples:"
@@ -52,6 +56,9 @@ ib_status() {
 		port_status $1 $i
 	done
 }
+
+echo ""
+echo "*** WARNING ***: this command is deprecated; Please use \"ibstat\""
 
 if [ "$1" = "-h" ]; then
 	usage
