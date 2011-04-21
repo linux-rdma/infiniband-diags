@@ -175,7 +175,7 @@ perform the lookup.
 .TP
 \fBLocal HCA info\fR
 
-	See: ibstat, ibstatus,
+	See: ibstat
 
 .TP
 \fBConnectivity check\fR
@@ -196,7 +196,7 @@ as compared to the above scripts.  They are provided as legacy scripts.
 ibcheckerrors, ibclearcounters, ibclearerrors, ibdatacounters
 ibchecknet, ibchecknode, ibcheckport, ibcheckportstate,
 ibcheckportwidth, ibcheckstate, ibcheckwidth, ibswportwatch,
-ibprintca, ibprintrt, ibprintswitch
+ibprintca, ibprintrt, ibprintswitch, ibstatus
 
 
 .SH AUTHORS
