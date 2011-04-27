@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    version="1.0">
+
+  <xs:element name="ibfabric">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:choice>
+          <xs:element name="chassis" type="chassis"/>
+          <xs:element name="linklist" type="linklist"/>
+          <xs:element name="subfabric" type="subfabric"/>
+          <xs:element name="property" type="property"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="schemaVersion" type="xs:decimal" use="required"/>
+      <xs:attribute name="name" type="xs:string" use="required"/>
+      <xs:attribute name="width" type="width"/>
+      <xs:attribute name="speed" type="speed"/>
+    </xs:complexType>
+  </xs:element> <!-- ibfabric -->
+
+  <!-- define our types below -->
+
+  <xs:complexType name="subfabric">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:choice>
+        <xs:element name="chassis" type="chassis"/>
+        <xs:element name="linklist" type="linklist"/>
+        <xs:element name="subfabric" type="subfabric"/>
+        <xs:element name="property" type="property"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="width" type="width"/>
+    <xs:attribute name="speed" type="speed"/>
+  </xs:complexType> <!-- subfabric -->
+
+  <xs:complexType name="linklist">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:choice>
+        <xs:element name="property" type="property"/>
+        <xs:element name="port" type="port"/>
+      </xs:choice>
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="width" type="width"/>
+    <xs:attribute name="speed" type="speed"/>
+  </xs:complexType> <!-- linklist -->
+
+  <xs:complexType name="port">
+    <xs:sequence>
+      <xs:element name="r_port" type="r_port"/>
+      <xs:element name="r_node" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="num" type="xs:integer" use="required"/>
+      <!-- port number -->
+    <xs:attribute name="extnum" type="xs:integer"/>
+      <!-- external port number -->
+    <xs:attribute name="width" type="width"/>
+    <xs:attribute name="speed" type="speed"/>
+  </xs:complexType> <!-- port -->
+
+  <xs:complexType name="r_port">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="extnum" type="xs:int"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <xs:complexType name="chassis">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+        <xs:attribute name="model" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType> <!-- chassis -->
+
+  <xs:simpleType name="width">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MAX"/>
+      <xs:enumeration value="1X"/>
+      <xs:enumeration value="1x"/>
+      <xs:enumeration value="4X"/>
+      <xs:enumeration value="4x"/>
+      <xs:enumeration value="8X"/>
+      <xs:enumeration value="8x"/>
+      <xs:enumeration value="12X"/>
+      <xs:enumeration value="12x"/>
+    </xs:restriction>
+  </xs:simpleType> <!-- width -->
+
+  <xs:simpleType name="speed">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MAX"/>
+      <xs:enumeration value="SDR"/>
+      <xs:enumeration value="DDR"/>
+      <xs:enumeration value="QDR"/>
+      <xs:enumeration value="FDR10"/>
+      <xs:enumeration value="FDR"/>
+      <xs:enumeration value="EDR"/>
+    </xs:restriction>
+  </xs:simpleType> <!-- speed -->
+
+  <xs:complexType name="property">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="name" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType> <!-- property -->
+
+</xs:schema>
