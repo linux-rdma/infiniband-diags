@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified"
+    version="1.0">
+
+  <xs:element name="ibchassismap">
+    <xs:complexType>
+      <xs:sequence minOccurs="1" maxOccurs="unbounded">
+        <xs:choice>
+          <xs:element name="linklist" type="linklist"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="schemaVersion" type="xs:decimal" use="required"/>
+      <xs:attribute name="model" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element> <!-- ibchassismap -->
+
+  <!-- define our types below -->
+
+  <xs:complexType name="linklist">
+    <xs:sequence minOccurs="1" maxOccurs="unbounded">
+      <xs:element name="port" type="port"/>
+    </xs:sequence>
+    <xs:attribute name="position" type="xs:string" use="required"/>
+  </xs:complexType> <!-- linklist -->
+
+  <xs:complexType name="port">
+    <xs:sequence>
+      <xs:element name="r_port" type="r_port"/>
+      <xs:element name="r_node" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="num" type="xs:integer" use="required"/>
+      <!-- port number -->
+    <xs:attribute name="extnum" type="xs:integer"/>
+      <!-- external port number -->
+  </xs:complexType> <!-- port -->
+
+  <xs:complexType name="r_port">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="extnum" type="xs:int"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+</xs:schema>
