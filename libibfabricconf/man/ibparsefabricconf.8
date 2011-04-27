@@ -1,0 +1,38 @@
+.TH IBPARSEFABRICCONF 8 "Sept 29, 2010" "Pragmatic Infiniband Utilities" "Infiniband Diagnostics"
+
+.SH NAME
+ibparsefabricconf \- parse fabricconf file
+
+.SH SYNOPSIS
+.B ibparsefabricconf [options] [node] [port]
+
+.SH DESCRIPTION
+.PP
+ibparsefabricconf reads the ib fabric config file and reports the links configured
+there.  If node is specified print the config for that node.
+If port is specified further limit the output to that single node/port.
+
+.SH OPTIONS
+
+.PP
+.TP
+\fB\-config, \-c <ibfabricconf>\fR
+Specify an alternate config file (default: /usr/local/etc/pragmaticIB/ibfabricconf.xml)
+
+.TP
+\fB\-\-warn_dup, \-w\fR
+print warning about duplicate links found in fabric config
+
+.TP
+\fB\-\-check_dup\fR
+only print duplicates links found in fabric config.  This is useful for
+verifing your config file.
+
+.TP
+\fB\-\-delim_out, \-d <deliminator>\fR
+output colums deliminated by <deliminator>
+
+.SH AUTHOR
+.TP
+Ira Weiny
+.RI < weiny2@llnl.gov >

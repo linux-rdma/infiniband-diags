@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE ibchassismap SYSTEM "chassismap.dtd">
+
+<chassismap model="QLogic_9240">
+<!--
+	Example: define "ibcore1"
+		acepting default node names
+		"ibcore1 SP1a", "ibcore1 SP1b", etc.
+		"ibcore1 L1a", "ibcore1 L2a", "ibcore1 Leaf 3 Chip A", etc.
+
+	<chassis name="ibcore1" model="QLogic_9240">
+	</chassis>
+
+	Example: define "ibcore1" renaming only spine boards
+		default for line boards
+		"ibcore1 L1a", "ibcore1 L1b", "ibcore1 L2a", etc.
+
+	<chassis name="ibcore1" model="QLogic_9240">
+		<node position="SP1a">ibcore1 SP1a</node>
+		<node position="SP1b">ibcore1 SP1b</node>
+		<node position="SP2a">ibcore1 SP2a</node>
+		<node position="SP2b">ibcore1 SP2b</node>
+		<node position="SP3a">ibcore1 SP3a</node>
+		<node position="SP3b">ibcore1 SP3b</node>
+		<node position="SP4a">ibcore1 SP4a</node>
+		<node position="SP4b">ibcore1 SP4b</node>
+		<node position="SP5a">ibcore1 SP5a</node>
+		<node position="SP5b">ibcore1 SP5b</node>
+		<node position="SP6a">ibcore1 SP6a</node>
+		<node position="SP6b">ibcore1 SP6b</node>
+	</chassis>
+
+	Note: names must be unique throughout the fabric.
+
+	The following positions are defined in this file.
+
+	[name] should be replaced by the name you want specified
+
+	<node position="SP1a">[name]</node>
+	<node position="SP1b">[name]</node>
+	<node position="SP2a">[name]</node>
+	<node position="SP2b">[name]</node>
+	<node position="SP3a">[name]</node>
+	<node position="SP3b">[name]</node>
+	<node position="SP4a">[name]</node>
+	<node position="SP4b">[name]</node>
+	<node position="SP5a">[name]</node>
+	<node position="SP5b">[name]</node>
+	<node position="SP6a">[name]</node>
+	<node position="SP6b">[name]</node>
+
+	<node position="L1a">[name]</node>
+	<node position="L2a">[name]</node>
+	<node position="L3a">[name]</node>
+	<node position="L4a">[name]</node>
+	<node position="L5a">[name]</node>
+	<node position="L6a">[name]</node>
+	<node position="L7a">[name]</node>
+	<node position="L8a">[name]</node>
+	<node position="L9a">[name]</node>
+	<node position="L10a">[name]</node>
+	<node position="L11a">[name]</node>
+	<node position="L12a">[name]</node>
+	<node position="L13a">[name]</node>
+	<node position="L14a">[name]</node>
+	<node position="L15a">[name]</node>
+	<node position="L16a">[name]</node>
+	<node position="L17a">[name]</node>
+	<node position="L18a">[name]</node>
+	<node position="L19a">[name]</node>
+	<node position="L20a">[name]</node>
+	<node position="L21a">[name]</node>
+	<node position="L22a">[name]</node>
+	<node position="L23a">[name]</node>
+	<node position="L24a">[name]</node>
+-->
+
+	<linklist position="SP1a">
+		<port num="1"><r_port>19</r_port><r_node>L7a</r_node></port>
+		<port num="2"><r_port>23</r_port><r_node>L19a</r_node></port>
+		<port num="3"><r_port>19</r_port><r_node>L9a</r_node></port>
+		<port num="4"><r_port>22</r_port><r_node>L23a</r_node></port>
+		<port num="5"><r_port>22</r_port><r_node>L17a</r_node></port>
+		<port num="6"><r_port>24</r_port><r_node>L21a</r_node></port>
+		<port num="7"><r_port>21</r_port><r_node>L3a</r_node></port>
+		<port num="8"><r_port>20</r_port><r_node>L13a</r_node></port>
+		<port num="9"><r_port>19</r_port><r_node>L1a</r_node></port>
+		<port num="10"><r_port>21</r_port><r_node>L15a</r_node></port>
+		<port num="11"><r_port>20</r_port><r_node>L11a</r_node></port>
+		<port num="12"><r_port>22</r_port><r_node>L5a</r_node></port>
+		<port num="13"><r_port>14</r_port><r_node>L8a</r_node></port>
+		<port num="14"><r_port>18</r_port><r_node>L20a</r_node></port>
+		<port num="15"><r_port>14</r_port><r_node>L10a</r_node></port>
+		<port num="16"><r_port>17</r_port><r_node>L24a</r_node></port>
+		<port num="17"><r_port>17</r_port><r_node>L18a</r_node></port>
+		<port num="18"><r_port>16</r_port><r_node>L22a</r_node></port>
+		<port num="19"><r_port>13</r_port><r_node>L4a</r_node></port>
+		<port num="20"><r_port>15</r_port><r_node>L14a</r_node></port>
+		<port num="21"><r_port>14</r_port><r_node>L2a</r_node></port>
+		<port num="22"><r_port>13</r_port><r_node>L16a</r_node></port>
+		<port num="23"><r_port>15</r_port><r_node>L12a</r_node></port>
+		<port num="24"><r_port>17</r_port><r_node>L6a</r_node></port>
+	</linklist>
+	<linklist position="SP1b">
+		<port num="1"><r_port>17</r_port><r_node>L5a</r_node></port>
+		<port num="2"><r_port>15</r_port><r_node>L11a</r_node></port>
+		<port num="3"><r_port>13</r_port><r_node>L15a</r_node></port>
+		<port num="4"><r_port>14</r_port><r_node>L1a</r_node></port>
+		<port num="5"><r_port>15</r_port><r_node>L13a</r_node></port>
+		<port num="6"><r_port>13</r_port><r_node>L3a</r_node></port>
+		<port num="7"><r_port>16</r_port><r_node>L21a</r_node></port>
+		<port num="8"><r_port>17</r_port><r_node>L17a</r_node></port>
+		<port num="9"><r_port>17</r_port><r_node>L23a</r_node></port>
+		<port num="10"><r_port>14</r_port><r_node>L9a</r_node></port>
+		<port num="11"><r_port>18</r_port><r_node>L19a</r_node></port>
+		<port num="12"><r_port>14</r_port><r_node>L7a</r_node></port>
+		<port num="13"><r_port>19</r_port><r_node>L8a</r_node></port>
+		<port num="14"><r_port>23</r_port><r_node>L20a</r_node></port>
+		<port num="15"><r_port>19</r_port><r_node>L10a</r_node></port>
+		<port num="16"><r_port>22</r_port><r_node>L24a</r_node></port>
+		<port num="17"><r_port>22</r_port><r_node>L18a</r_node></port>
+		<port num="18"><r_port>24</r_port><r_node>L22a</r_node></port>
+		<port num="19"><r_port>21</r_port><r_node>L4a</r_node></port>
+		<port num="20"><r_port>20</r_port><r_node>L14a</r_node></port>
+		<port num="21"><r_port>19</r_port><r_node>L2a</r_node></port>
+		<port num="22"><r_port>21</r_port><r_node>L16a</r_node></port>
+		<port num="23"><r_port>20</r_port><r_node>L12a</r_node></port>
+		<port num="24"><r_port>22</r_port><r_node>L6a</r_node></port>
+	</linklist>
+	<linklist position="SP2a">
+		<port num="1"><r_port>19</r_port><r_node>L11a</r_node></port>
+		<port num="2"><r_port>20</r_port><r_node>L9a</r_node></port>
+		<port num="3"><r_port>24</r_port><r_node>L19a</r_node></port>
+		<port num="4"><r_port>22</r_port><r_node>L21a</r_node></port>
+		<port num="5"><r_port>23</r_port><r_node>L23a</r_node></port>
+		<port num="6"><r_port>21</r_port><r_node>L17a</r_node></port>
+		<port num="7"><r_port>21</r_port><r_node>L13a</r_node></port>
+		<port num="8"><r_port>20</r_port><r_node>L1a</r_node></port>
+		<port num="9"><r_port>19</r_port><r_node>L3a</r_node></port>
+		<port num="10"><r_port>24</r_port><r_node>L5a</r_node></port>
+		<port num="11"><r_port>23</r_port><r_node>L7a</r_node></port>
+		<port num="12"><r_port>20</r_port><r_node>L15a</r_node></port>
+		<port num="13"><r_port>14</r_port><r_node>L12a</r_node></port>
+		<port num="14"><r_port>15</r_port><r_node>L10a</r_node></port>
+		<port num="15"><r_port>16</r_port><r_node>L20a</r_node></port>
+		<port num="16"><r_port>17</r_port><r_node>L22a</r_node></port>
+		<port num="17"><r_port>18</r_port><r_node>L24a</r_node></port>
+		<port num="18"><r_port>13</r_port><r_node>L18a</r_node></port>
+		<port num="19"><r_port>13</r_port><r_node>L14a</r_node></port>
+		<port num="20"><r_port>15</r_port><r_node>L2a</r_node></port>
+		<port num="21"><r_port>14</r_port><r_node>L4a</r_node></port>
+		<port num="22"><r_port>16</r_port><r_node>L6a</r_node></port>
+		<port num="23"><r_port>18</r_port><r_node>L8a</r_node></port>
+		<port num="24"><r_port>15</r_port><r_node>L16a</r_node></port>
+	</linklist>
+	<linklist position="SP2b">
+		<port num="1"><r_port>15</r_port><r_node>L15a</r_node></port>
+		<port num="2"><r_port>18</r_port><r_node>L7a</r_node></port>
+		<port num="3"><r_port>16</r_port><r_node>L5a</r_node></port>
+		<port num="4"><r_port>14</r_port><r_node>L3a</r_node></port>
+		<port num="5"><r_port>15</r_port><r_node>L1a</r_node></port>
+		<port num="6"><r_port>13</r_port><r_node>L13a</r_node></port>
+		<port num="7"><r_port>13</r_port><r_node>L17a</r_node></port>
+		<port num="8"><r_port>18</r_port><r_node>L23a</r_node></port>
+		<port num="9"><r_port>17</r_port><r_node>L21a</r_node></port>
+		<port num="10"><r_port>16</r_port><r_node>L19a</r_node></port>
+		<port num="11"><r_port>15</r_port><r_node>L9a</r_node></port>
+		<port num="12"><r_port>14</r_port><r_node>L11a</r_node></port>
+		<port num="13"><r_port>19</r_port><r_node>L12a</r_node></port>
+		<port num="14"><r_port>20</r_port><r_node>L10a</r_node></port>
+		<port num="15"><r_port>24</r_port><r_node>L20a</r_node></port>
+		<port num="16"><r_port>22</r_port><r_node>L22a</r_node></port>
+		<port num="17"><r_port>23</r_port><r_node>L24a</r_node></port>
+		<port num="18"><r_port>21</r_port><r_node>L18a</r_node></port>
+		<port num="19"><r_port>21</r_port><r_node>L14a</r_node></port>
+		<port num="20"><r_port>20</r_port><r_node>L2a</r_node></port>
+		<port num="21"><r_port>19</r_port><r_node>L4a</r_node></port>
+		<port num="22"><r_port>24</r_port><r_node>L6a</r_node></port>
+		<port num="23"><r_port>23</r_port><r_node>L8a</r_node></port>
+		<port num="24"><r_port>20</r_port><r_node>L16a</r_node></port>
+	</linklist>
+	<linklist position="SP3a">
+		<port num="1"><r_port>22</r_port><r_node>L19a</r_node></port>
+		<port num="2"><r_port>23</r_port><r_node>L17a</r_node></port>
+		<port num="3"><r_port>21</r_port><r_node>L11a</r_node></port>
+		<port num="4"><r_port>19</r_port><r_node>L13a</r_node></port>
+		<port num="5"><r_port>23</r_port><r_node>L21a</r_node></port>
+		<port num="6"><r_port>24</r_port><r_node>L23a</r_node></port>
+		<port num="7"><r_port>21</r_port><r_node>L1a</r_node></port>
+		<port num="8"><r_port>20</r_port><r_node>L3a</r_node></port>
+		<port num="9"><r_port>22</r_port><r_node>L15a</r_node></port>
+		<port num="10"><r_port>24</r_port><r_node>L9a</r_node></port>
+		<port num="11"><r_port>21</r_port><r_node>L7a</r_node></port>
+		<port num="12"><r_port>23</r_port><r_node>L5a</r_node></port>
+		<port num="13"><r_port>17</r_port><r_node>L20a</r_node></port>
+		<port num="14"><r_port>18</r_port><r_node>L18a</r_node></port>
+		<port num="15"><r_port>13</r_port><r_node>L12a</r_node></port>
+		<port num="16"><r_port>14</r_port><r_node>L14a</r_node></port>
+		<port num="17"><r_port>18</r_port><r_node>L22a</r_node></port>
+		<port num="18"><r_port>16</r_port><r_node>L24a</r_node></port>
+		<port num="19"><r_port>13</r_port><r_node>L2a</r_node></port>
+		<port num="20"><r_port>15</r_port><r_node>L4a</r_node></port>
+		<port num="21"><r_port>17</r_port><r_node>L16a</r_node></port>
+		<port num="22"><r_port>16</r_port><r_node>L10a</r_node></port>
+		<port num="23"><r_port>13</r_port><r_node>L8a</r_node></port>
+		<port num="24"><r_port>18</r_port><r_node>L6a</r_node></port>
+	</linklist>
+	<linklist position="SP3b">
+		<port num="1"><r_port>18</r_port><r_node>L5a</r_node></port>
+		<port num="2"><r_port>13</r_port><r_node>L7a</r_node></port>
+		<port num="3"><r_port>16</r_port><r_node>L9a</r_node></port>
+		<port num="4"><r_port>17</r_port><r_node>L15a</r_node></port>
+		<port num="5"><r_port>15</r_port><r_node>L3a</r_node></port>
+		<port num="6"><r_port>13</r_port><r_node>L1a</r_node></port>
+		<port num="7"><r_port>16</r_port><r_node>L23a</r_node></port>
+		<port num="8"><r_port>18</r_port><r_node>L21a</r_node></port>
+		<port num="9"><r_port>14</r_port><r_node>L13a</r_node></port>
+		<port num="10"><r_port>13</r_port><r_node>L11a</r_node></port>
+		<port num="11"><r_port>18</r_port><r_node>L17a</r_node></port>
+		<port num="12"><r_port>17</r_port><r_node>L19a</r_node></port>
+		<port num="13"><r_port>22</r_port><r_node>L20a</r_node></port>
+		<port num="14"><r_port>23</r_port><r_node>L18a</r_node></port>
+		<port num="15"><r_port>21</r_port><r_node>L12a</r_node></port>
+		<port num="16"><r_port>19</r_port><r_node>L14a</r_node></port>
+		<port num="17"><r_port>23</r_port><r_node>L22a</r_node></port>
+		<port num="18"><r_port>24</r_port><r_node>L24a</r_node></port>
+		<port num="19"><r_port>21</r_port><r_node>L2a</r_node></port>
+		<port num="20"><r_port>20</r_port><r_node>L4a</r_node></port>
+		<port num="21"><r_port>22</r_port><r_node>L16a</r_node></port>
+		<port num="22"><r_port>24</r_port><r_node>L10a</r_node></port>
+		<port num="23"><r_port>21</r_port><r_node>L8a</r_node></port>
+		<port num="24"><r_port>23</r_port><r_node>L6a</r_node></port>
+	</linklist>
+	<linklist position="SP4a">
+		<port num="1"><r_port>19</r_port><r_node>L15a</r_node></port>
+		<port num="2"><r_port>19</r_port><r_node>L19a</r_node></port>
+		<port num="3"><r_port>21</r_port><r_node>L9a</r_node></port>
+		<port num="4"><r_port>19</r_port><r_node>L23a</r_node></port>
+		<port num="5"><r_port>19</r_port><r_node>L17a</r_node></port>
+		<port num="6"><r_port>21</r_port><r_node>L21a</r_node></port>
+		<port num="7"><r_port>24</r_port><r_node>L3a</r_node></port>
+		<port num="8"><r_port>20</r_port><r_node>L7a</r_node></port>
+		<port num="9"><r_port>22</r_port><r_node>L1a</r_node></port>
+		<port num="10"><r_port>24</r_port><r_node>L11a</r_node></port>
+		<port num="11"><r_port>20</r_port><r_node>L5a</r_node></port>
+		<port num="12"><r_port>22</r_port><r_node>L13a</r_node></port>
+		<port num="13"><r_port>14</r_port><r_node>L16a</r_node></port>
+		<port num="14"><r_port>14</r_port><r_node>L20a</r_node></port>
+		<port num="15"><r_port>13</r_port><r_node>L10a</r_node></port>
+		<port num="16"><r_port>14</r_port><r_node>L24a</r_node></port>
+		<port num="17"><r_port>14</r_port><r_node>L18a</r_node></port>
+		<port num="18"><r_port>13</r_port><r_node>L22a</r_node></port>
+		<port num="19"><r_port>16</r_port><r_node>L4a</r_node></port>
+		<port num="20"><r_port>15</r_port><r_node>L8a</r_node></port>
+		<port num="21"><r_port>17</r_port><r_node>L2a</r_node></port>
+		<port num="22"><r_port>16</r_port><r_node>L12a</r_node></port>
+		<port num="23"><r_port>15</r_port><r_node>L6a</r_node></port>
+		<port num="24"><r_port>17</r_port><r_node>L14a</r_node></port>
+	</linklist>
+	<linklist position="SP4b">
+		<port num="1"><r_port>17</r_port><r_node>L13a</r_node></port>
+		<port num="2"><r_port>15</r_port><r_node>L5a</r_node></port>
+		<port num="3"><r_port>16</r_port><r_node>L11a</r_node></port>
+		<port num="4"><r_port>17</r_port><r_node>L1a</r_node></port>
+		<port num="5"><r_port>15</r_port><r_node>L7a</r_node></port>
+		<port num="6"><r_port>16</r_port><r_node>L3a</r_node></port>
+		<port num="7"><r_port>13</r_port><r_node>L21a</r_node></port>
+		<port num="8"><r_port>14</r_port><r_node>L17a</r_node></port>
+		<port num="9"><r_port>14</r_port><r_node>L23a</r_node></port>
+		<port num="10"><r_port>13</r_port><r_node>L9a</r_node></port>
+		<port num="11"><r_port>14</r_port><r_node>L19a</r_node></port>
+		<port num="12"><r_port>14</r_port><r_node>L15a</r_node></port>
+		<port num="13"><r_port>19</r_port><r_node>L16a</r_node></port>
+		<port num="14"><r_port>19</r_port><r_node>L20a</r_node></port>
+		<port num="15"><r_port>21</r_port><r_node>L10a</r_node></port>
+		<port num="16"><r_port>19</r_port><r_node>L24a</r_node></port>
+		<port num="17"><r_port>19</r_port><r_node>L18a</r_node></port>
+		<port num="18"><r_port>21</r_port><r_node>L22a</r_node></port>
+		<port num="19"><r_port>24</r_port><r_node>L4a</r_node></port>
+		<port num="20"><r_port>20</r_port><r_node>L8a</r_node></port>
+		<port num="21"><r_port>22</r_port><r_node>L2a</r_node></port>
+		<port num="22"><r_port>24</r_port><r_node>L12a</r_node></port>
+		<port num="23"><r_port>20</r_port><r_node>L6a</r_node></port>
+		<port num="24"><r_port>22</r_port><r_node>L14a</r_node></port>
+	</linklist>
+	<linklist position="SP5a">
+		<port num="1"><r_port>22</r_port><r_node>L9a</r_node></port>
+		<port num="2"><r_port>20</r_port><r_node>L17a</r_node></port>
+		<port num="3"><r_port>20</r_port><r_node>L19a</r_node></port>
+		<port num="4"><r_port>19</r_port><r_node>L21a</r_node></port>
+		<port num="5"><r_port>20</r_port><r_node>L23a</r_node></port>
+		<port num="6"><r_port>24</r_port><r_node>L13a</r_node></port>
+		<port num="7"><r_port>24</r_port><r_node>L7a</r_node></port>
+		<port num="8"><r_port>23</r_port><r_node>L1a</r_node></port>
+		<port num="9"><r_port>22</r_port><r_node>L3a</r_node></port>
+		<port num="10"><r_port>21</r_port><r_node>L5a</r_node></port>
+		<port num="11"><r_port>23</r_port><r_node>L15a</r_node></port>
+		<port num="12"><r_port>22</r_port><r_node>L11a</r_node></port>
+		<port num="13"><r_port>17</r_port><r_node>L10a</r_node></port>
+		<port num="14"><r_port>15</r_port><r_node>L18a</r_node></port>
+		<port num="15"><r_port>15</r_port><r_node>L20a</r_node></port>
+		<port num="16"><r_port>14</r_port><r_node>L22a</r_node></port>
+		<port num="17"><r_port>15</r_port><r_node>L24a</r_node></port>
+		<port num="18"><r_port>16</r_port><r_node>L14a</r_node></port>
+		<port num="19"><r_port>16</r_port><r_node>L8a</r_node></port>
+		<port num="20"><r_port>18</r_port><r_node>L2a</r_node></port>
+		<port num="21"><r_port>17</r_port><r_node>L4a</r_node></port>
+		<port num="22"><r_port>13</r_port><r_node>L6a</r_node></port>
+		<port num="23"><r_port>18</r_port><r_node>L16a</r_node></port>
+		<port num="24"><r_port>17</r_port><r_node>L12a</r_node></port>
+	</linklist>
+	<linklist position="SP5b">
+		<port num="1"><r_port>17</r_port><r_node>L11a</r_node></port>
+		<port num="2"><r_port>18</r_port><r_node>L15a</r_node></port>
+		<port num="3"><r_port>13</r_port><r_node>L5a</r_node></port>
+		<port num="4"><r_port>17</r_port><r_node>L3a</r_node></port>
+		<port num="5"><r_port>18</r_port><r_node>L1a</r_node></port>
+		<port num="6"><r_port>16</r_port><r_node>L7a</r_node></port>
+		<port num="7"><r_port>16</r_port><r_node>L13a</r_node></port>
+		<port num="8"><r_port>15</r_port><r_node>L23a</r_node></port>
+		<port num="9"><r_port>14</r_port><r_node>L21a</r_node></port>
+		<port num="10"><r_port>15</r_port><r_node>L19a</r_node></port>
+		<port num="11"><r_port>15</r_port><r_node>L17a</r_node></port>
+		<port num="12"><r_port>17</r_port><r_node>L9a</r_node></port>
+		<port num="13"><r_port>22</r_port><r_node>L10a</r_node></port>
+		<port num="14"><r_port>20</r_port><r_node>L18a</r_node></port>
+		<port num="15"><r_port>20</r_port><r_node>L20a</r_node></port>
+		<port num="16"><r_port>19</r_port><r_node>L22a</r_node></port>
+		<port num="17"><r_port>20</r_port><r_node>L24a</r_node></port>
+		<port num="18"><r_port>24</r_port><r_node>L14a</r_node></port>
+		<port num="19"><r_port>24</r_port><r_node>L8a</r_node></port>
+		<port num="20"><r_port>23</r_port><r_node>L2a</r_node></port>
+		<port num="21"><r_port>22</r_port><r_node>L4a</r_node></port>
+		<port num="22"><r_port>21</r_port><r_node>L6a</r_node></port>
+		<port num="23"><r_port>23</r_port><r_node>L16a</r_node></port>
+		<port num="24"><r_port>22</r_port><r_node>L12a</r_node></port>
+	</linklist>
+	<linklist position="SP6a">
+		<port num="1"><r_port>23</r_port><r_node>L9a</r_node></port>
+		<port num="2"><r_port>24</r_port><r_node>L15a</r_node></port>
+		<port num="3"><r_port>21</r_port><r_node>L19a</r_node></port>
+		<port num="4"><r_port>23</r_port><r_node>L11a</r_node></port>
+		<port num="5"><r_port>20</r_port><r_node>L21a</r_node></port>
+		<port num="6"><r_port>21</r_port><r_node>L23a</r_node></port>
+		<port num="7"><r_port>24</r_port><r_node>L1a</r_node></port>
+		<port num="8"><r_port>23</r_port><r_node>L3a</r_node></port>
+		<port num="9"><r_port>22</r_port><r_node>L7a</r_node></port>
+		<port num="10"><r_port>24</r_port><r_node>L17a</r_node></port>
+		<port num="11"><r_port>23</r_port><r_node>L13a</r_node></port>
+		<port num="12"><r_port>19</r_port><r_node>L5a</r_node></port>
+		<port num="13"><r_port>18</r_port><r_node>L10a</r_node></port>
+		<port num="14"><r_port>16</r_port><r_node>L16a</r_node></port>
+		<port num="15"><r_port>13</r_port><r_node>L20a</r_node></port>
+		<port num="16"><r_port>18</r_port><r_node>L12a</r_node></port>
+		<port num="17"><r_port>15</r_port><r_node>L22a</r_node></port>
+		<port num="18"><r_port>13</r_port><r_node>L24a</r_node></port>
+		<port num="19"><r_port>16</r_port><r_node>L2a</r_node></port>
+		<port num="20"><r_port>18</r_port><r_node>L4a</r_node></port>
+		<port num="21"><r_port>17</r_port><r_node>L8a</r_node></port>
+		<port num="22"><r_port>16</r_port><r_node>L18a</r_node></port>
+		<port num="23"><r_port>18</r_port><r_node>L14a</r_node></port>
+		<port num="24"><r_port>14</r_port><r_node>L6a</r_node></port>
+	</linklist>
+	<linklist position="SP6b">
+		<port num="1"><r_port>14</r_port><r_node>L5a</r_node></port>
+		<port num="2"><r_port>18</r_port><r_node>L13a</r_node></port>
+		<port num="3"><r_port>16</r_port><r_node>L17a</r_node></port>
+		<port num="4"><r_port>17</r_port><r_node>L7a</r_node></port>
+		<port num="5"><r_port>18</r_port><r_node>L3a</r_node></port>
+		<port num="6"><r_port>16</r_port><r_node>L1a</r_node></port>
+		<port num="7"><r_port>13</r_port><r_node>L23a</r_node></port>
+		<port num="8"><r_port>15</r_port><r_node>L21a</r_node></port>
+		<port num="9"><r_port>18</r_port><r_node>L11a</r_node></port>
+		<port num="10"><r_port>13</r_port><r_node>L19a</r_node></port>
+		<port num="11"><r_port>16</r_port><r_node>L15a</r_node></port>
+		<port num="12"><r_port>18</r_port><r_node>L9a</r_node></port>
+		<port num="13"><r_port>23</r_port><r_node>L10a</r_node></port>
+		<port num="14"><r_port>24</r_port><r_node>L16a</r_node></port>
+		<port num="15"><r_port>21</r_port><r_node>L20a</r_node></port>
+		<port num="16"><r_port>23</r_port><r_node>L12a</r_node></port>
+		<port num="17"><r_port>20</r_port><r_node>L22a</r_node></port>
+		<port num="18"><r_port>21</r_port><r_node>L24a</r_node></port>
+		<port num="19"><r_port>24</r_port><r_node>L2a</r_node></port>
+		<port num="20"><r_port>23</r_port><r_node>L4a</r_node></port>
+		<port num="21"><r_port>22</r_port><r_node>L8a</r_node></port>
+		<port num="22"><r_port>24</r_port><r_node>L18a</r_node></port>
+		<port num="23"><r_port>23</r_port><r_node>L14a</r_node></port>
+		<port num="24"><r_port>19</r_port><r_node>L6a</r_node></port>
+	</linklist>
+</chassismap>

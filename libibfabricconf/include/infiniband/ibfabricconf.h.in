@@ -1,0 +1,107 @@
+/*
+ * Copyright (c) 2011 Lawrence Livermore National Security All rights reserved.
+ *
+ * This software is available to you under a choice of one of two
+ * licenses.  You may choose to be licensed under the terms of the GNU
+ * General Public License (GPL) Version 2, available from the file
+ * COPYING in the main directory of this source tree, or the
+ * OpenIB.org BSD license below:
+ *
+ *     Redistribution and use in source and binary forms, with or
+ *     without modification, are permitted provided that the following
+ *     conditions are met:
+ *
+ *      - Redistributions of source code must retain the above
+ *        copyright notice, this list of conditions and the following
+ *        disclaimer.
+ *
+ *      - Redistributions in binary form must reproduce the above
+ *        copyright notice, this list of conditions and the following
+ *        disclaimer in the documentation and/or other materials
+ *        provided with the distribution.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ * BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
+#ifndef _IBFABRICCONF_H_
+#define _IBFABRICCONF_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#define IBFC_CONFIG_DIR "@IBDIAG_CONFIG_PATH@"
+#define IBFC_CHASSIS_CONF_DIR IBFC_CONFIG_DIR"/chassis_fabricconfs"
+#define IBFC_DEF_CONFIG "@IBDIAG_CONFIG_PATH@/ibfabricconf.xml"
+
+/* These are opaque data types */
+typedef struct ibfc_conf ibfc_conf_t; /* configuration */
+typedef struct ibfc_port ibfc_port_t; /* port  */
+typedef struct ibfc_prop ibfc_prop_t; /* link properties */
+typedef struct ibfc_port_list ibfc_port_list_t; /* port list */
+
+/* alloc/free config */
+ibfc_conf_t *ibfc_alloc_conf(void);
+void ibfc_free(ibfc_conf_t *fabricconf);
+
+/* config flags */
+void ibfc_set_stderr(ibfc_conf_t *fabricconf, FILE *f); /* user owns f */
+void ibfc_set_warn_dup(ibfc_conf_t *fabricconf, int warn_dup);
+
+/* populate config from file specified */
+int ibfc_parse_file(char *file, ibfc_conf_t *fabricconf);
+	/* ibfc_parse_file will clear ports previously contained
+	 * in fabricconf */
+
+/* Accessor functions */
+/* config */
+char *ibfc_conf_get_name(ibfc_conf_t *conf);
+
+/* port */
+ibfc_port_t *ibfc_get_port(ibfc_conf_t *fabricconf, char *name, int p_num);
+char *ibfc_port_get_name(ibfc_port_t *port);
+int   ibfc_port_get_port_num(ibfc_port_t *port);
+ibfc_prop_t *ibfc_port_get_prop(ibfc_port_t *port);
+ibfc_port_t *ibfc_port_get_remote(ibfc_port_t *port);
+
+void  ibfc_port_set_user(ibfc_port_t *port, void *user_data);
+void *ibfc_port_get_user(ibfc_port_t *port);
+	/* user owns "user_data" */
+
+int ibfc_get_port_list(ibfc_conf_t *fabricconf, char *name,
+			ibfc_port_list_t **list);
+	/* allocates "list" user must call ibfc_free_port_list */
+void ibfc_free_port_list(ibfc_port_list_t *port_list);
+
+
+/* iter functions */
+typedef void (*process_port_func)(ibfc_port_t *port, void *user_data);
+void ibfc_iter_ports(ibfc_conf_t *fabricconf, process_port_func func,
+                     void *user_data);
+void ibfc_iter_port_list(ibfc_port_list_t *port_list,
+			process_port_func func, void *user_data);
+
+/* properties */
+/* functions return memory held by library do _NOT_ free */
+char *ibfc_prop_get(ibfc_prop_t *prop, char *prop_name);
+	/* generic get based on the property name */
+int ibfc_prop_get_speed(ibfc_prop_t *prop);
+int ibfc_prop_get_width(ibfc_prop_t *prop);
+
+char *ibfc_sprintf_prop(char ret[], unsigned n, ibfc_port_t *port);
+	/* returns "ret" or NULL on error */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* _IBFABRICCONF_H_ */
+

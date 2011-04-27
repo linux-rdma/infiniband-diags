@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE ibchassismap SYSTEM "ibchassismap.dtd">
+
+<chassismap model="Sun_DCS_72">
+<!--
+	Example: define "ibcore1"
+		acepting default node names
+		"ibcore1 FC1", "ibcore1 FC2", etc.
+		"ibcore1 LC1", "ibcore1 LC2", "ibcore1 LC3", etc.
+
+	<chassis name="ibcore1" model="Sun_DCS_72">
+	</chassis>
+
+	Example: define "ibcore1" renaming spine boards
+		default for remainging
+		"ibcore1 LC1", "ibcore1 LC2", "ibcore1 LC3", etc.
+
+	<chassis name="ibcore1" model="Sun_DCS_72">
+		<node position="FC1">ibcore1 Fabric Card 01</node>
+		<node position="FC2">ibcore1 Fabric Card 02</node>
+	</chassis>
+
+	The following positions are defined in this file
+
+	[name] should be replaced by the name you want specified
+
+        <node position="LC1">[name]</node>
+        <node position="LC2">[name]</node>
+        <node position="LC3">[name]</node>
+        <node position="LC4">[name]</node>
+
+        <node position="FC1">[name]</node>
+        <node position="FC2">[name]</node>
+-->
+	<linklist position="FC1">
+		<port num="1"><r_port>9</r_port><r_node>LC1</r_node></port>
+		<port num="2"><r_port>8</r_port><r_node>LC3</r_node></port>
+		<port num="3"><r_port>7</r_port><r_node>LC3</r_node></port>
+		<port num="4"><r_port>6</r_port><r_node>LC1</r_node></port>
+		<port num="5"><r_port>5</r_port><r_node>LC3</r_node></port>
+		<port num="6"><r_port>4</r_port><r_node>LC1</r_node></port>
+		<port num="7"><r_port>3</r_port><r_node>LC3</r_node></port>
+		<port num="8"><r_port>2</r_port><r_node>LC3</r_node></port>
+		<port num="9"><r_port>1</r_port><r_node>LC1</r_node></port>
+		<port num="10"><r_port>13</r_port><r_node>LC2</r_node></port>
+		<port num="11"><r_port>14</r_port><r_node>LC4</r_node></port>
+		<port num="12"><r_port>15</r_port><r_node>LC4</r_node></port>
+		<port num="13"><r_port>10</r_port><r_node>LC2</r_node></port>
+		<port num="14"><r_port>11</r_port><r_node>LC4</r_node></port>
+		<port num="15"><r_port>12</r_port><r_node>LC4</r_node></port>
+		<port num="16"><r_port>18</r_port><r_node>LC2</r_node></port>
+		<port num="17"><r_port>17</r_port><r_node>LC4</r_node></port>
+		<port num="18"><r_port>16</r_port><r_node>LC2</r_node></port>
+		<port num="19"><r_port>10</r_port><r_node>LC3</r_node></port>
+		<port num="20"><r_port>11</r_port><r_node>LC1</r_node></port>
+		<port num="21"><r_port>12</r_port><r_node>LC1</r_node></port>
+		<port num="22"><r_port>18</r_port><r_node>LC3</r_node></port>
+		<port num="23"><r_port>17</r_port><r_node>LC1</r_node></port>
+		<port num="24"><r_port>16</r_port><r_node>LC3</r_node></port>
+		<port num="25"><r_port>15</r_port><r_node>LC1</r_node></port>
+		<port num="26"><r_port>14</r_port><r_node>LC1</r_node></port>
+		<port num="27"><r_port>13</r_port><r_node>LC3</r_node></port>
+		<port num="28"><r_port>1</r_port><r_node>LC4</r_node></port>
+		<port num="29"><r_port>2</r_port><r_node>LC2</r_node></port>
+		<port num="30"><r_port>3</r_port><r_node>LC2</r_node></port>
+		<port num="31"><r_port>9</r_port><r_node>LC4</r_node></port>
+		<port num="32"><r_port>8</r_port><r_node>LC2</r_node></port>
+		<port num="33"><r_port>7</r_port><r_node>LC2</r_node></port>
+		<port num="34"><r_port>6</r_port><r_node>LC4</r_node></port>
+		<port num="35"><r_port>5</r_port><r_node>LC2</r_node></port>
+		<port num="36"><r_port>4</r_port><r_node>LC4</r_node></port>
+	</linklist>
+	<linklist position="FC2">
+		<port num="1"><r_port>9</r_port><r_node>LC3</r_node></port>
+		<port num="2"><r_port>8</r_port><r_node>LC1</r_node></port>
+		<port num="3"><r_port>7</r_port><r_node>LC1</r_node></port>
+		<port num="4"><r_port>6</r_port><r_node>LC3</r_node></port>
+		<port num="5"><r_port>5</r_port><r_node>LC1</r_node></port>
+		<port num="6"><r_port>4</r_port><r_node>LC3</r_node></port>
+		<port num="7"><r_port>3</r_port><r_node>LC1</r_node></port>
+		<port num="8"><r_port>2</r_port><r_node>LC1</r_node></port>
+		<port num="9"><r_port>1</r_port><r_node>LC3</r_node></port>
+		<port num="10"><r_port>13</r_port><r_node>LC4</r_node></port>
+		<port num="11"><r_port>14</r_port><r_node>LC2</r_node></port>
+		<port num="12"><r_port>15</r_port><r_node>LC2</r_node></port>
+		<port num="13"><r_port>10</r_port><r_node>LC4</r_node></port>
+		<port num="14"><r_port>11</r_port><r_node>LC2</r_node></port>
+		<port num="15"><r_port>12</r_port><r_node>LC2</r_node></port>
+		<port num="16"><r_port>18</r_port><r_node>LC4</r_node></port>
+		<port num="17"><r_port>17</r_port><r_node>LC2</r_node></port>
+		<port num="18"><r_port>16</r_port><r_node>LC4</r_node></port>
+		<port num="19"><r_port>10</r_port><r_node>LC1</r_node></port>
+		<port num="20"><r_port>11</r_port><r_node>LC3</r_node></port>
+		<port num="21"><r_port>12</r_port><r_node>LC3</r_node></port>
+		<port num="22"><r_port>18</r_port><r_node>LC1</r_node></port>
+		<port num="23"><r_port>17</r_port><r_node>LC3</r_node></port>
+		<port num="24"><r_port>16</r_port><r_node>LC1</r_node></port>
+		<port num="25"><r_port>15</r_port><r_node>LC3</r_node></port>
+		<port num="26"><r_port>14</r_port><r_node>LC3</r_node></port>
+		<port num="27"><r_port>13</r_port><r_node>LC1</r_node></port>
+		<port num="28"><r_port>1</r_port><r_node>LC2</r_node></port>
+		<port num="29"><r_port>2</r_port><r_node>LC4</r_node></port>
+		<port num="30"><r_port>3</r_port><r_node>LC4</r_node></port>
+		<port num="31"><r_port>9</r_port><r_node>LC2</r_node></port>
+		<port num="32"><r_port>8</r_port><r_node>LC4</r_node></port>
+		<port num="33"><r_port>7</r_port><r_node>LC4</r_node></port>
+		<port num="34"><r_port>6</r_port><r_node>LC2</r_node></port>
+		<port num="35"><r_port>5</r_port><r_node>LC4</r_node></port>
+		<port num="36"><r_port>4</r_port><r_node>LC2</r_node></port>
+	</linklist>
+</chassismap>
