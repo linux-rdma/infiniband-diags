@@ -1,0 +1,30 @@
+.TH IBFABRICCONF 3  "Apr 13, 2011" "OpenIB" "OpenIB Programmer's Manual"
+
+.SH NAME
+ibfabricconf -- a library to read fabric config data.
+
+.SH SYNOPSIS
+.nf
+.B #include <infiniband/ibfabricconf.h>
+.sp
+.Bi "ibfc_conf_t *ibfc_alloc_conf(void);"
+.Bi "void ibfc_free(ibfc_conf_t *fabricconf);"
+.Bi "void ibfc_set_stderr(ibfc_conf_t *fabricconf, FILE *f); /* user owns f */"
+.Bi "void ibfc_set_warn_dup(ibfc_conf_t *fabricconf, int warn_dup);"
+
+.SH DESCRIPTION
+
+ibfabricconf is a library used to read XML configuration data which is
+specified by system administartors to describe the connectivity of their IB
+fabric.  Tools may use this library to query the expected connectivity of the
+fabric and compare it to actual data found.
+
+.SH RETURN VALUE
+
+.SH EXAMPLES
+
+.SH SEE ALSO
+
+.SH AUTHORS
+.TP
+Ira Weiny <weiny2@llnl.gov>
