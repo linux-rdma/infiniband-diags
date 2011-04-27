@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE ibchassismap SYSTEM "ibchassismap.dtd">
+
+<chassismap model="Voltaire_4700">
+<!--
+	Example: define "ibt1"
+		acepting default node names
+		"ibt1 Spine 1", "ibt1 Spine 2", etc.
+		"ibt1 Line 1", "ibt1 Line 2", "ibt1 Line 3", etc.
+
+	<chassis name="ibt1" model="Voltaire_4700">
+	</chassis>
+
+	Example: define "ibt1" renaming spine boards
+		default for remainging
+		"ibt1 Line 1", "ibt1 Line 2", "ibt1 Line 3", etc.
+
+	<chassis name="ibt1" model="Voltaire_4700">
+		<node position="Spine 1">Spine 01</node>
+		<node position="Spine 2">Spine 02</node>
+		<node position="Spine 3">Spine 03</node>
+		<node position="Spine 4">Spine 04</node>
+		<node position="Spine 5">Spine 05</node>
+		<node position="Spine 6">Spine 06</node>
+	</chassis>
+
+	Note: names must be unique throughout the fabric.
+
+	The following positions are defined in this file
+
+	[name] should be replaced by the name you want specified
+
+	<node position="Line 1">[name]</node>
+	<node position="Line 2">[name]</node>
+	<node position="Line 3">[name]</node>
+	<node position="Line 4">[name]</node>
+	<node position="Line 5">[name]</node>
+	<node position="Line 6">[name]</node>
+	<node position="Line 7">[name]</node>
+	<node position="Line 8">[name]</node>
+	<node position="Line 9">[name]</node>
+	<node position="Line 10">[name]</node>
+	<node position="Line 11">[name]</node>
+	<node position="Line 12">[name]</node>
+
+	<node position="Spine 1">[name]</node>
+	<node position="Spine 2">[name]</node>
+	<node position="Spine 3">[name]</node>
+	<node position="Spine 4">[name]</node>
+	<node position="Spine 5">[name]</node>
+	<node position="Spine 6">[name]</node>
+	<node position="Spine 7">[name]</node>
+	<node position="Spine 8">[name]</node>
+	<node position="Spine 9">[name]</node>
+-->
+	<linklist position="Spine 9">
+		<port num="1"><r_port>17</r_port><r_node>Line 1</r_node></port>
+		<port num="2"><r_port>18</r_port><r_node>Line 1</r_node></port>
+		<port num="3"><r_port>17</r_port><r_node>Line 2</r_node></port>
+		<port num="4"><r_port>18</r_port><r_node>Line 2</r_node></port>
+		<port num="5"><r_port>17</r_port><r_node>Line 3</r_node></port>
+		<port num="6"><r_port>18</r_port><r_node>Line 3</r_node></port>
+		<port num="7"><r_port>17</r_port><r_node>Line 4</r_node></port>
+		<port num="8"><r_port>18</r_port><r_node>Line 4</r_node></port>
+		<port num="9"><r_port>17</r_port><r_node>Line 5</r_node></port>
+		<port num="10"><r_port>18</r_port><r_node>Line 5</r_node></port>
+		<port num="11"><r_port>17</r_port><r_node>Line 6</r_node></port>
+		<port num="12"><r_port>18</r_port><r_node>Line 6</r_node></port>
+		<port num="13"><r_port>17</r_port><r_node>Line 7</r_node></port>
+		<port num="14"><r_port>18</r_port><r_node>Line 7</r_node></port>
+		<port num="15"><r_port>17</r_port><r_node>Line 8</r_node></port>
+		<port num="16"><r_port>18</r_port><r_node>Line 8</r_node></port>
+		<port num="17"><r_port>17</r_port><r_node>Line 9</r_node></port>
+		<port num="18"><r_port>18</r_port><r_node>Line 9</r_node></port>
+		<port num="19"><r_port>17</r_port><r_node>Line 10</r_node></port>
+		<port num="20"><r_port>18</r_port><r_node>Line 10</r_node></port>
+		<port num="21"><r_port>17</r_port><r_node>Line 11</r_node></port>
+		<port num="22"><r_port>18</r_port><r_node>Line 11</r_node></port>
+		<port num="23"><r_port>17</r_port><r_node>Line 12</r_node></port>
+		<port num="24"><r_port>18</r_port><r_node>Line 12</r_node></port>
+	</linklist>
+	<linklist position="Spine 8">
+		<port num="1"><r_port>15</r_port><r_node>Line 1</r_node></port>
+		<port num="2"><r_port>16</r_port><r_node>Line 1</r_node></port>
+		<port num="3"><r_port>15</r_port><r_node>Line 2</r_node></port>
+		<port num="4"><r_port>16</r_port><r_node>Line 2</r_node></port>
+		<port num="5"><r_port>15</r_port><r_node>Line 3</r_node></port>
+		<port num="6"><r_port>16</r_port><r_node>Line 3</r_node></port>
+		<port num="7"><r_port>15</r_port><r_node>Line 4</r_node></port>
+		<port num="8"><r_port>16</r_port><r_node>Line 4</r_node></port>
+		<port num="9"><r_port>15</r_port><r_node>Line 5</r_node></port>
+		<port num="10"><r_port>16</r_port><r_node>Line 5</r_node></port>
+		<port num="11"><r_port>15</r_port><r_node>Line 6</r_node></port>
+		<port num="12"><r_port>16</r_port><r_node>Line 6</r_node></port>
+		<port num="13"><r_port>15</r_port><r_node>Line 7</r_node></port>
+		<port num="14"><r_port>16</r_port><r_node>Line 7</r_node></port>
+		<port num="15"><r_port>15</r_port><r_node>Line 8</r_node></port>
+		<port num="16"><r_port>16</r_port><r_node>Line 8</r_node></port>
+		<port num="17"><r_port>15</r_port><r_node>Line 9</r_node></port>
+		<port num="18"><r_port>16</r_port><r_node>Line 9</r_node></port>
+		<port num="19"><r_port>15</r_port><r_node>Line 10</r_node></port>
+		<port num="20"><r_port>16</r_port><r_node>Line 10</r_node></port>
+		<port num="21"><r_port>15</r_port><r_node>Line 11</r_node></port>
+		<port num="22"><r_port>16</r_port><r_node>Line 11</r_node></port>
+		<port num="23"><r_port>15</r_port><r_node>Line 12</r_node></port>
+		<port num="24"><r_port>16</r_port><r_node>Line 12</r_node></port>
+	</linklist>
+	<linklist position="Spine 7">
+		<port num="1"><r_port>13</r_port><r_node>Line 1</r_node></port>
+		<port num="2"><r_port>14</r_port><r_node>Line 1</r_node></port>
+		<port num="3"><r_port>13</r_port><r_node>Line 2</r_node></port>
+		<port num="4"><r_port>14</r_port><r_node>Line 2</r_node></port>
+		<port num="5"><r_port>13</r_port><r_node>Line 3</r_node></port>
+		<port num="6"><r_port>14</r_port><r_node>Line 3</r_node></port>
+		<port num="7"><r_port>13</r_port><r_node>Line 4</r_node></port>
+		<port num="8"><r_port>14</r_port><r_node>Line 4</r_node></port>
+		<port num="9"><r_port>13</r_port><r_node>Line 5</r_node></port>
+		<port num="10"><r_port>14</r_port><r_node>Line 5</r_node></port>
+		<port num="11"><r_port>13</r_port><r_node>Line 6</r_node></port>
+		<port num="12"><r_port>14</r_port><r_node>Line 6</r_node></port>
+		<port num="13"><r_port>13</r_port><r_node>Line 7</r_node></port>
+		<port num="14"><r_port>14</r_port><r_node>Line 7</r_node></port>
+		<port num="15"><r_port>13</r_port><r_node>Line 8</r_node></port>
+		<port num="16"><r_port>14</r_port><r_node>Line 8</r_node></port>
+		<port num="17"><r_port>13</r_port><r_node>Line 9</r_node></port>
+		<port num="18"><r_port>14</r_port><r_node>Line 9</r_node></port>
+		<port num="19"><r_port>13</r_port><r_node>Line 10</r_node></port>
+		<port num="20"><r_port>14</r_port><r_node>Line 10</r_node></port>
+		<port num="21"><r_port>13</r_port><r_node>Line 11</r_node></port>
+		<port num="22"><r_port>14</r_port><r_node>Line 11</r_node></port>
+		<port num="23"><r_port>13</r_port><r_node>Line 12</r_node></port>
+		<port num="24"><r_port>14</r_port><r_node>Line 12</r_node></port>
+	</linklist>
+	<linklist position="Spine 6">
+		<port num="1"><r_port>11</r_port><r_node>Line 1</r_node></port>
+		<port num="2"><r_port>12</r_port><r_node>Line 1</r_node></port>
+		<port num="3"><r_port>11</r_port><r_node>Line 2</r_node></port>
+		<port num="4"><r_port>12</r_port><r_node>Line 2</r_node></port>
+		<port num="5"><r_port>11</r_port><r_node>Line 3</r_node></port>
+		<port num="6"><r_port>12</r_port><r_node>Line 3</r_node></port>
+		<port num="7"><r_port>11</r_port><r_node>Line 4</r_node></port>
+		<port num="8"><r_port>12</r_port><r_node>Line 4</r_node></port>
+		<port num="9"><r_port>11</r_port><r_node>Line 5</r_node></port>
+		<port num="10"><r_port>12</r_port><r_node>Line 5</r_node></port>
+		<port num="11"><r_port>11</r_port><r_node>Line 6</r_node></port>
+		<port num="12"><r_port>12</r_port><r_node>Line 6</r_node></port>
+		<port num="13"><r_port>11</r_port><r_node>Line 7</r_node></port>
+		<port num="14"><r_port>12</r_port><r_node>Line 7</r_node></port>
+		<port num="15"><r_port>11</r_port><r_node>Line 8</r_node></port>
+		<port num="16"><r_port>12</r_port><r_node>Line 8</r_node></port>
+		<port num="17"><r_port>11</r_port><r_node>Line 9</r_node></port>
+		<port num="18"><r_port>12</r_port><r_node>Line 9</r_node></port>
+		<port num="19"><r_port>11</r_port><r_node>Line 10</r_node></port>
+		<port num="20"><r_port>12</r_port><r_node>Line 10</r_node></port>
+		<port num="21"><r_port>11</r_port><r_node>Line 11</r_node></port>
+		<port num="22"><r_port>12</r_port><r_node>Line 11</r_node></port>
+		<port num="23"><r_port>11</r_port><r_node>Line 12</r_node></port>
+		<port num="24"><r_port>12</r_port><r_node>Line 12</r_node></port>
+	</linklist>
+	<linklist position="Spine 5">
+		<port num="1"><r_port>9</r_port><r_node>Line 1</r_node></port>
+		<port num="2"><r_port>10</r_port><r_node>Line 1</r_node></port>
+		<port num="3"><r_port>9</r_port><r_node>Line 2</r_node></port>
+		<port num="4"><r_port>10</r_port><r_node>Line 2</r_node></port>
+		<port num="5"><r_port>9</r_port><r_node>Line 3</r_node></port>
+		<port num="6"><r_port>10</r_port><r_node>Line 3</r_node></port>
+		<port num="7"><r_port>9</r_port><r_node>Line 4</r_node></port>
+		<port num="8"><r_port>10</r_port><r_node>Line 4</r_node></port>
+		<port num="9"><r_port>9</r_port><r_node>Line 5</r_node></port>
+		<port num="10"><r_port>10</r_port><r_node>Line 5</r_node></port>
+		<port num="11"><r_port>9</r_port><r_node>Line 6</r_node></port>
+		<port num="12"><r_port>10</r_port><r_node>Line 6</r_node></port>
+		<port num="13"><r_port>9</r_port><r_node>Line 7</r_node></port>
+		<port num="14"><r_port>10</r_port><r_node>Line 7</r_node></port>
+		<port num="15"><r_port>9</r_port><r_node>Line 8</r_node></port>
+		<port num="16"><r_port>10</r_port><r_node>Line 8</r_node></port>
+		<port num="17"><r_port>9</r_port><r_node>Line 9</r_node></port>
+		<port num="18"><r_port>10</r_port><r_node>Line 9</r_node></port>
+		<port num="19"><r_port>9</r_port><r_node>Line 10</r_node></port>
+		<port num="20"><r_port>10</r_port><r_node>Line 10</r_node></port>
+		<port num="21"><r_port>9</r_port><r_node>Line 11</r_node></port>
+		<port num="22"><r_port>10</r_port><r_node>Line 11</r_node></port>
+		<port num="23"><r_port>9</r_port><r_node>Line 12</r_node></port>
+		<port num="24"><r_port>10</r_port><r_node>Line 12</r_node></port>
+	</linklist>
+	<linklist position="Spine 4">
+		<port num="1"><r_port>7</r_port><r_node>Line 1</r_node></port>
+		<port num="2"><r_port>8</r_port><r_node>Line 1</r_node></port>
+		<port num="3"><r_port>7</r_port><r_node>Line 2</r_node></port>
+		<port num="4"><r_port>8</r_port><r_node>Line 2</r_node></port>
+		<port num="5"><r_port>7</r_port><r_node>Line 3</r_node></port>
+		<port num="6"><r_port>8</r_port><r_node>Line 3</r_node></port>
+		<port num="7"><r_port>7</r_port><r_node>Line 4</r_node></port>
+		<port num="8"><r_port>8</r_port><r_node>Line 4</r_node></port>
+		<port num="9"><r_port>7</r_port><r_node>Line 5</r_node></port>
+		<port num="10"><r_port>8</r_port><r_node>Line 5</r_node></port>
+		<port num="11"><r_port>7</r_port><r_node>Line 6</r_node></port>
+		<port num="12"><r_port>8</r_port><r_node>Line 6</r_node></port>
+		<port num="13"><r_port>7</r_port><r_node>Line 7</r_node></port>
+		<port num="14"><r_port>8</r_port><r_node>Line 7</r_node></port>
+		<port num="15"><r_port>7</r_port><r_node>Line 8</r_node></port>
+		<port num="16"><r_port>8</r_port><r_node>Line 8</r_node></port>
+		<port num="17"><r_port>7</r_port><r_node>Line 9</r_node></port>
+		<port num="18"><r_port>8</r_port><r_node>Line 9</r_node></port>
+		<port num="19"><r_port>7</r_port><r_node>Line 10</r_node></port>
+		<port num="20"><r_port>8</r_port><r_node>Line 10</r_node></port>
+		<port num="21"><r_port>7</r_port><r_node>Line 11</r_node></port>
+		<port num="22"><r_port>8</r_port><r_node>Line 11</r_node></port>
+		<port num="23"><r_port>7</r_port><r_node>Line 12</r_node></port>
+		<port num="24"><r_port>8</r_port><r_node>Line 12</r_node></port>
+	</linklist>
+	<linklist position="Spine 3">
+		<port num="1"><r_port>5</r_port><r_node>Line 1</r_node></port>
+		<port num="2"><r_port>6</r_port><r_node>Line 1</r_node></port>
+		<port num="3"><r_port>5</r_port><r_node>Line 2</r_node></port>
+		<port num="4"><r_port>6</r_port><r_node>Line 2</r_node></port>
+		<port num="5"><r_port>5</r_port><r_node>Line 3</r_node></port>
+		<port num="6"><r_port>6</r_port><r_node>Line 3</r_node></port>
+		<port num="7"><r_port>5</r_port><r_node>Line 4</r_node></port>
+		<port num="8"><r_port>6</r_port><r_node>Line 4</r_node></port>
+		<port num="9"><r_port>5</r_port><r_node>Line 5</r_node></port>
+		<port num="10"><r_port>6</r_port><r_node>Line 5</r_node></port>
+		<port num="11"><r_port>5</r_port><r_node>Line 6</r_node></port>
+		<port num="12"><r_port>6</r_port><r_node>Line 6</r_node></port>
+		<port num="13"><r_port>5</r_port><r_node>Line 7</r_node></port>
+		<port num="14"><r_port>6</r_port><r_node>Line 7</r_node></port>
+		<port num="15"><r_port>5</r_port><r_node>Line 8</r_node></port>
+		<port num="16"><r_port>6</r_port><r_node>Line 8</r_node></port>
+		<port num="17"><r_port>5</r_port><r_node>Line 9</r_node></port>
+		<port num="18"><r_port>6</r_port><r_node>Line 9</r_node></port>
+		<port num="19"><r_port>5</r_port><r_node>Line 10</r_node></port>
+		<port num="20"><r_port>6</r_port><r_node>Line 10</r_node></port>
+		<port num="21"><r_port>5</r_port><r_node>Line 11</r_node></port>
+		<port num="22"><r_port>6</r_port><r_node>Line 11</r_node></port>
+		<port num="23"><r_port>5</r_port><r_node>Line 12</r_node></port>
+		<port num="24"><r_port>6</r_port><r_node>Line 12</r_node></port>
+	</linklist>
+	<linklist position="Spine 2">
+		<port num="1"><r_port>3</r_port><r_node>Line 1</r_node></port>
+		<port num="2"><r_port>4</r_port><r_node>Line 1</r_node></port>
+		<port num="3"><r_port>3</r_port><r_node>Line 2</r_node></port>
+		<port num="4"><r_port>4</r_port><r_node>Line 2</r_node></port>
+		<port num="5"><r_port>3</r_port><r_node>Line 3</r_node></port>
+		<port num="6"><r_port>4</r_port><r_node>Line 3</r_node></port>
+		<port num="7"><r_port>3</r_port><r_node>Line 4</r_node></port>
+		<port num="8"><r_port>4</r_port><r_node>Line 4</r_node></port>
+		<port num="9"><r_port>3</r_port><r_node>Line 5</r_node></port>
+		<port num="10"><r_port>4</r_port><r_node>Line 5</r_node></port>
+		<port num="11"><r_port>3</r_port><r_node>Line 6</r_node></port>
+		<port num="12"><r_port>4</r_port><r_node>Line 6</r_node></port>
+		<port num="13"><r_port>3</r_port><r_node>Line 7</r_node></port>
+		<port num="14"><r_port>4</r_port><r_node>Line 7</r_node></port>
+		<port num="15"><r_port>3</r_port><r_node>Line 8</r_node></port>
+		<port num="16"><r_port>4</r_port><r_node>Line 8</r_node></port>
+		<port num="17"><r_port>3</r_port><r_node>Line 9</r_node></port>
+		<port num="18"><r_port>4</r_port><r_node>Line 9</r_node></port>
+		<port num="19"><r_port>3</r_port><r_node>Line 10</r_node></port>
+		<port num="20"><r_port>4</r_port><r_node>Line 10</r_node></port>
+		<port num="21"><r_port>3</r_port><r_node>Line 11</r_node></port>
+		<port num="22"><r_port>4</r_port><r_node>Line 11</r_node></port>
+		<port num="23"><r_port>3</r_port><r_node>Line 12</r_node></port>
+		<port num="24"><r_port>4</r_port><r_node>Line 12</r_node></port>
+	</linklist>
+	<linklist position="Spine 1">
+		<port num="1"><r_port>1</r_port><r_node>Line 1</r_node></port>
+		<port num="2"><r_port>2</r_port><r_node>Line 1</r_node></port>
+		<port num="3"><r_port>1</r_port><r_node>Line 2</r_node></port>
+		<port num="4"><r_port>2</r_port><r_node>Line 2</r_node></port>
+		<port num="5"><r_port>1</r_port><r_node>Line 3</r_node></port>
+		<port num="6"><r_port>2</r_port><r_node>Line 3</r_node></port>
+		<port num="7"><r_port>1</r_port><r_node>Line 4</r_node></port>
+		<port num="8"><r_port>2</r_port><r_node>Line 4</r_node></port>
+		<port num="9"><r_port>1</r_port><r_node>Line 5</r_node></port>
+		<port num="10"><r_port>2</r_port><r_node>Line 5</r_node></port>
+		<port num="11"><r_port>1</r_port><r_node>Line 6</r_node></port>
+		<port num="12"><r_port>2</r_port><r_node>Line 6</r_node></port>
+		<port num="13"><r_port>1</r_port><r_node>Line 7</r_node></port>
+		<port num="14"><r_port>2</r_port><r_node>Line 7</r_node></port>
+		<port num="15"><r_port>1</r_port><r_node>Line 8</r_node></port>
+		<port num="16"><r_port>2</r_port><r_node>Line 8</r_node></port>
+		<port num="17"><r_port>1</r_port><r_node>Line 9</r_node></port>
+		<port num="18"><r_port>2</r_port><r_node>Line 9</r_node></port>
+		<port num="19"><r_port>1</r_port><r_node>Line 10</r_node></port>
+		<port num="20"><r_port>2</r_port><r_node>Line 10</r_node></port>
+		<port num="21"><r_port>1</r_port><r_node>Line 11</r_node></port>
+		<port num="22"><r_port>2</r_port><r_node>Line 11</r_node></port>
+		<port num="23"><r_port>1</r_port><r_node>Line 12</r_node></port>
+		<port num="24"><r_port>2</r_port><r_node>Line 12</r_node></port>
+	</linklist>
+</chassismap>
