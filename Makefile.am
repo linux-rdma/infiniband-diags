@@ -1,5 +1,9 @@
 ACLOCAL_AMFLAGS = -I config
-SUBDIRS = libibnetdisc
+
+if HAVE_XML
+IBFABRICCONF = libibfabricconf
+endif
+SUBDIRS = libibnetdisc $(IBFABRICCONF)
 
 INCLUDES = -I$(top_builddir)/include/ -I$(srcdir)/include -I$(includedir) \
 	-I$(includedir)/infiniband -I$(top_srcdir)/libibnetdisc/include
