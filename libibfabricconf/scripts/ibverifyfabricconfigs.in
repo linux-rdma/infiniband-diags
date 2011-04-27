@@ -1,0 +1,110 @@
+#!/bin/bash
+#
+# Copyright (c) 2011 Lawrence Livermore National Security All rights reserved.
+#
+# This software is available to you under a choice of one of two
+# licenses.  You may choose to be licensed under the terms of the GNU
+# General Public License (GPL) Version 2, available from the file
+# COPYING in the main directory of this source tree, or the
+# OpenIB.org BSD license below:
+#
+#     Redistribution and use in source and binary forms, with or
+#     without modification, are permitted provided that the following
+#     conditions are met:
+#
+#      - Redistributions of source code must retain the above
+#        copyright notice, this list of conditions and the following
+#        disclaimer.
+#
+#      - Redistributions in binary form must reproduce the above
+#        copyright notice, this list of conditions and the following
+#        disclaimer in the documentation and/or other materials
+#        provided with the distribution.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+# BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+# ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+# CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+conf_dir=@IBDIAG_CONFIG_PATH@
+conf_file=$conf_dir/ibfabricconf.xml
+schema=""
+all="no"
+parsefabricconf=@IBSCRIPTPATH@/ibparsefabricconf
+
+function usage() {
+	echo  Usage: `basename $0` "[-hca] [-s <schema>] [<conf_file>]"
+	echo "       Verify ibfabricconf.xml."
+	echo "       default: @IBDIAG_CONFIG_PATH@/ibfabricconf.xml"
+	echo "   -c verify the file as an ibchassismap"
+	echo "   -s <schema> use specified schema"
+	echo "   -a verify all chassis files which are installed"
+	echo "      (implies -c option)"
+	echo "   -p <ibparsefabricconf> specify ibparsefabricconf executable"
+	echo "      most useful for testing in place"
+}
+
+chassis_map="no"
+while getopts "hcas:p:" flag
+do
+   case $flag in
+      "h") usage; exit 0;;
+      "c") chassis_map="yes";;
+      "s") schema=$OPTARG;;
+      "a") all="yes"; chassis_map="yes";;
+      "p") parsefabricconf=$OPTARG;;
+   esac
+done
+
+if [ "$schema" == "" ]; then
+	if [ "$chassis_map" == "yes" ]; then
+		schema=@IBDIAG_CONFIG_PATH@/schema/ibchassismap.xsd
+	else
+		schema=@IBDIAG_CONFIG_PATH@/schema/ibfabric.xsd
+	fi
+fi
+
+shift $(($OPTIND - 1))
+
+if [ "$1" != "" ]; then
+	conf_file=$1
+fi
+
+if [ "$all" == "yes" ]; then
+	conf_file=`ls @IBDIAG_CONFIG_PATH@/chassis_fabricconfs/*.xml`
+elif [ ! -f $conf_file ]; then
+	echo "ERROR: $conf_file"
+	echo "       does not exist or is not a file."
+	exit 1
+fi
+
+for file in $conf_file; do
+	xmllint --schema $schema $file > /dev/null
+	rc=$?
+	if [ "$rc" != "0" ]; then
+		echo "ERROR: $file"
+		echo "       Does not validate."
+		[ "$all" == "no" ] && exit 1
+	fi
+done
+
+if [ "$chassis_map" == "yes" ]; then
+	# only need to run xmllint on the chassismaps
+	exit 0
+fi
+
+$parsefabricconf -c $conf_file > /dev/null
+rc=$?
+if [ "$rc" != "0" ]; then
+	echo "ERROR: $conf_file"
+	echo "       Is not parseable by libibfabricconf."
+	exit 1
+fi
+
+exit 0
+

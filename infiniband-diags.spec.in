@@ -11,8 +11,8 @@ Group: System Environment/Libraries
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Source: http://www.openfabrics.org/downloads/management/@TARBALL@
 Url: http://openfabrics.org/
-BuildRequires: libibmad-devel, opensm-devel, libibumad-devel
-Requires: libibmad, opensm-libs, libibumad
+BuildRequires: libibmad-devel, opensm-devel, libibumad-devel, libxml2-devel, glib2-devel
+Requires: libibmad, opensm-libs, libibumad, libxml2, glib2
 Provides: perl(IBswcountlimits)
 Obsoletes: openib-diags
 
@@ -153,6 +153,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/ibclearcounters.8.gz
 %{_sbindir}/ibstatus
 %{_mandir}/man8/ibstatus.8.gz
+
+# libibfabricconfig specific tools
+%{_sbindir}/ibparsefabricconf
+%{_mandir}/man8/ibparsefabricconf.8.gz
+%{_sbindir}/ibverifyfabricconfigs
+%{_mandir}/man3/ibfabricconf.3.gz
 
 # and the rest
 %{_mandir}/man8/infiniband-diags.8.gz

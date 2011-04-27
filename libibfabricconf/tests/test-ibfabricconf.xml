@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE ibfabric>
+
+<ibfabric name="test fabric" schemaVersion="1.0">
+	<property name="type">QSFP</property>
+	<chassis name="test chassis" model="QLogic_9240"></chassis>
+	<linklist name="SDR switch" speed="SDR">
+		<port num="1"><r_port>1</r_port><r_node>SDR node</r_node></port>
+	</linklist>
+	<linklist name="DDR switch" speed="DDR">
+		<port num="1"><r_port>1</r_port><r_node>DDR node</r_node></port>
+	</linklist>
+	<linklist name="QDR switch" speed="QDR">
+		<port num="1"><r_port>1</r_port><r_node>QDR node</r_node></port>
+	</linklist>
+	<linklist name="FDR switch" speed="FDR">
+		<port num="1"><r_port>1</r_port><r_node>FDR node</r_node></port>
+	</linklist>
+	<linklist name="FDR10 switch" speed="FDR10">
+		<port num="1"><r_port>1</r_port><r_node>FDR10 node</r_node></port>
+	</linklist>
+	<linklist name="EDR switch" speed="EDR">
+		<port num="1"><r_port>1</r_port><r_node>EDR node</r_node></port>
+	</linklist>
+	<linklist name="1x switch" width="1x">
+		<port num="1"><r_port>1</r_port><r_node>1x node</r_node></port>
+	</linklist>
+	<linklist name="4x switch" width="4x">
+		<port num="1"><r_port>1</r_port><r_node>4x node</r_node></port>
+	</linklist>
+	<linklist name="8x switch" width="8x">
+		<port num="1"><r_port>1</r_port><r_node>8x node</r_node></port>
+	</linklist>
+	<linklist name="12x switch" width="12x">
+		<port num="1"><r_port>1</r_port><r_node>12x node</r_node></port>
+	</linklist>
+	<subfabric width="1x" speed="SDR">
+		<property name="color">blue</property>
+		<linklist name="1X SDR blue switch">
+			<port num="1"><r_port>2</r_port><r_node>SDR blue node</r_node></port>
+		</linklist>
+	</subfabric>
+</ibfabric>
