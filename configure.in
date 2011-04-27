@@ -146,6 +146,22 @@ IBSCRIPTPATH_TMP2="`echo $IBSCRIPTPATH_TMP1 | sed 's/^NONE/$ac_default_prefix/'`
 IBSCRIPTPATH="${with_ibpath_override:-`eval echo $IBSCRIPTPATH_TMP2`}"
 AC_SUBST(IBSCRIPTPATH)
 
+dnl Begin libibfabricconf stuff
+dnl find the XML support for ibfabricconf
+PKG_CHECK_MODULES([XML], [libxml-2.0], ac_xml=yes, ac_xml=no)
+AM_CONDITIONAL([HAVE_XML], test "$ac_xml" = "yes")
+if test "$ac_xml" = "yes"; then
+   AC_DEFINE([HAVE_XML], 1, [Define to 1 to indicate XML support])
+fi
+
+ibfabricconf_api_version=`grep LIBVERSION $srcdir/libibfabricconf/libibfabricconf.ver | sed 's/LIBVERSION=//'`
+if test -z $ibfabricconf_api_version; then
+   echo "FAILED to find $srcdir/libibfabricconf/libibfabricconf.ver"
+   exit 1
+fi
+AC_SUBST(ibfabricconf_api_version)
+dnl End libibfabricconf stuff
+
 dnl Begin libibnetdisc stuff
 ibnetdisc_api_version=`grep LIBVERSION $srcdir/libibnetdisc/libibnetdisc.ver | sed 's/LIBVERSION=//'`
 if test -z $ibnetdisc_api_version; then
@@ -181,5 +197,7 @@ AC_CONFIG_FILES([\
 	man/ibqueryerrors.8 \
 	man/infiniband-diags.8 \
 	libibnetdisc/Makefile \
+	libibfabricconf/Makefile \
+	libibfabricconf/include/infiniband/ibfabricconf.h \
 ])
 AC_OUTPUT
