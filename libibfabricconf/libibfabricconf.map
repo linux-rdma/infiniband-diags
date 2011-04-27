@@ -1,0 +1,27 @@
+IBLINKCONF_1.0 {
+	global:
+		ibfc_conf_get_name;
+		ibfc_prop_get_speed;
+		ibfc_prop_get_width;
+		ibfc_port_get_name;
+		ibfc_port_get_port_num;
+		ibfc_port_get_prop;
+		ibfc_port_get_remote;
+		ibfc_port_set_user;
+		ibfc_port_get_user;
+		ibfc_sprintf_prop;
+		ibfc_alloc_conf;
+		ibfc_free;
+		ibfc_set_stderr;
+		ibfc_set_warn_dup;
+		ibfc_free_port_list;
+		ibfc_parse_file;
+		ibfc_get_port;
+		ibfc_get_port_list;
+		ibfc_iter_ports;
+		ibfc_iter_port_list;
+		ibfc_port_num_dont_care;
+		ibfc_port_name_dont_care;
+		ibfc_prop_get_length;
+	local: *;
+};
