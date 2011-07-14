@@ -147,6 +147,7 @@ void sa_report_err(int status);
 		comp_mask |= IB_##name##_COMPMASK_##mask; \
 	}
 
+unsigned int get_max(unsigned int num);
 void get_max_msg(char *width_msg, char *speed_msg, int msg_size,
 		 ibnd_port_t * port);
 
