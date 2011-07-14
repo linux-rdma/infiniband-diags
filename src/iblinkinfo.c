@@ -48,6 +48,7 @@
 #include <getopt.h>
 #include <errno.h>
 #include <inttypes.h>
+#include <limits.h>
 
 #include <complib/cl_nodenamemap.h>
 #include <infiniband/ibnetdisc.h>
@@ -61,8 +62,9 @@
 
 #define DIFF_FLAG_DEFAULT (DIFF_FLAG_PORT_CONNECTION | DIFF_FLAG_PORT_STATE)
 
+nn_map_t *node_name_map = NULL;
+
 static char *node_name_map_file = NULL;
-static nn_map_t *node_name_map = NULL;
 static char *load_cache_file = NULL;
 static char *diff_cache_file = NULL;
 static unsigned diffcheck_flags = DIFF_FLAG_DEFAULT;
@@ -79,6 +81,18 @@ static int line_mode = 0;
 static int add_sw_settings = 0;
 static int only_flag = 0;
 static int only_type = 0;
+
+#ifdef HAVE_XML
+#include <infiniband/ibfabricconf.h>
+#include "checkfabric.h"
+
+static int check_mode = 0;
+static char *generate_config = NULL;
+static char *ignore_regex = NULL;
+static int print_missing = 0;
+
+check_flags_t check_flags;
+#endif
 
 int filterdownport_check(ibnd_node_t * node, ibnd_port_t * port)
 {
@@ -504,6 +518,57 @@ int diff_node(ibnd_node_t * node, ibnd_fabric_t * orig_fabric,
 	return 0;
 }
 
+static int print_links(ib_portid_t *port_id,
+		       struct ibmad_port *ibmad_port,
+		       ibnd_fabric_t *fabric,
+		       ibnd_fabric_t *diff_fabric)
+{
+	int rc = 0;
+
+	if (!all && guid_str) {
+		ibnd_port_t *p = ibnd_find_port_guid(fabric, guid);
+		if (p && (!only_flag || p->node->type == only_type)) {
+			ibnd_node_t *n = p->node;
+			if (diff_fabric)
+				diff_node(n, diff_fabric, fabric);
+			else
+				print_node(n, NULL);
+		}
+		else
+			fprintf(stderr, "Failed to find port: %s\n", guid_str);
+	} else if (!all && dr_path) {
+		ibnd_port_t *p = NULL;
+		uint8_t ni[IB_SMP_DATA_SIZE] = { 0 };
+
+		if (!smp_query_via(ni, port_id, IB_ATTR_NODE_INFO, 0,
+				   ibd_timeout, ibmad_port))
+			return -1;
+		mad_decode_field(ni, IB_NODE_PORT_GUID_F, &(guid));
+
+		p = ibnd_find_port_guid(fabric, guid);
+		if (p && (!only_flag || p->node->type == only_type)) {
+			ibnd_node_t *n = p->node;
+			if (diff_fabric)
+				diff_node(n, diff_fabric, fabric);
+			else
+				print_node(n, NULL);
+		}
+		else
+			fprintf(stderr, "Failed to find port: %s\n", dr_path);
+	} else {
+		if (diff_fabric)
+			diff_node(NULL, diff_fabric, fabric);
+		else {
+			if (only_flag)
+				ibnd_iter_nodes_type(fabric, print_node,
+						     only_type, NULL);
+			else
+				ibnd_iter_nodes(fabric, print_node, NULL);
+		}
+	}
+	return rc;
+}
+
 static int process_opt(void *context, int ch, char *optarg)
 {
 	struct ibnd_config *cfg = context;
@@ -550,6 +615,32 @@ static int process_opt(void *context, int ch, char *optarg)
 		only_flag = 1;
 		only_type = IB_NODE_CA;
 		break;
+#ifdef HAVE_XML
+	case 'f': /* check */
+		check_mode = 1;
+		break;
+	case 8: /* ibfabricconf */
+		check_flags.fabricconffile = strdup(optarg);
+		break;
+	case 9: /* downnodes */
+		check_flags.downnodes_str = strdup(optarg);
+		break;
+	case 10: /* smlid */
+		check_flags.sm_lid = (uint16_t)strtoul(optarg, NULL, 0);
+		break;
+	case 11: /* addr-info */
+		check_flags.print_addr_info = 1;
+		break;
+	case 12: /* generate-config */
+		generate_config = strdup(optarg);
+		break;
+	case 13: /* ignore */
+		ignore_regex = strdup(optarg);
+		break;
+	case 14: /* missing */
+		print_missing = 1;
+		break;
+#endif /* HAVE_XML */
 	case 'S':
 	case 'G':
 		guid_str = optarg;
@@ -629,8 +720,30 @@ int main(int argc, char **argv)
 		 "Output only switches"},
 		{"cas-only", 7, 0, NULL,
 		 "Output only CAs"},
+#ifdef HAVE_XML
+		{"\nCheck Fabric options:\n", 255, 0, NULL, ""}, /* dummy option */
+		{"check", 'f', 0, NULL,
+		 "check fabric; against ibfabricconf.xml"},
+		{"ibfabricconf", 8, 1, "<ibfabricconf>",
+		 "with '-f': specify an alternate ibfabricconf.xml file default: "IBFC_DEF_CONFIG},
+		{"downnodes", 9, 1, "<nodelist>",
+		 "with '-f': specify nodes which are known to be off.  "
+		 "Suppreses \"down port\" errors on links connected to those nodes"},
+		{"smlid", 10, 1, "<smlid>",
+		 "with '-f': specify an smlid to verify on all active ports\n"},
+		{"addr-info", 11, 0, "",
+		 "with '-f': print node/port GUID and LID information \n"},
+
+		{"generate-config", 12, 1, "<config>",
+		 "generate a config file"},
+		{"ignore", 13, 1, "<regex>",
+		 "with '--generate-config': skip nodes matching regex"},
+		{"missing", 14, 0, NULL,
+		 "with '--generate-config': insert place holders for dissconnected ports\n"},
+#endif
 		{"GNDN", 'R', 0, NULL,
-		 "(This option is obsolete and does nothing)"},
+		 "(This option is obsolete and does nothing)\n"
+		"Common Options:\n"},
 		{0}
 	};
 	char usage_args[] = "";
@@ -645,7 +758,7 @@ int main(int argc, char **argv)
 	if (!ibmad_port) {
 		fprintf(stderr, "Failed to open %s port %d\n", ibd_ca,
 			ibd_ca_port);
-		exit(1);
+		exit(-1);
 	}
 
 	smp_mkey_set(ibmad_port, ibd_mkey);
@@ -662,7 +775,7 @@ int main(int argc, char **argv)
 
 	if (dr_path && load_cache_file) {
 		fprintf(stderr, "Cannot specify cache and direct route path\n");
-		exit(1);
+		exit(-1);
 	}
 
 	if (dr_path) {
@@ -692,7 +805,7 @@ int main(int argc, char **argv)
 	if (load_cache_file) {
 		if ((fabric = ibnd_load_fabric(load_cache_file, 0)) == NULL) {
 			fprintf(stderr, "loading cached fabric failed\n");
-			exit(1);
+			exit(-1);
 		}
 	} else {
 		if (resolved >= 0) {
@@ -707,52 +820,25 @@ int main(int argc, char **argv)
 		if (!fabric &&
 		    !(fabric = ibnd_discover_fabric(ibd_ca, ibd_ca_port, NULL, &config))) {
 			fprintf(stderr, "discover failed\n");
-			rc = 1;
+			rc = -1;
 			goto close_port;
 		}
 	}
 
-	if (!all && guid_str) {
-		ibnd_port_t *p = ibnd_find_port_guid(fabric, guid);
-		if (p && (!only_flag || p->node->type == only_type)) {
-			ibnd_node_t *n = p->node;
-			if (diff_fabric)
-				diff_node(n, diff_fabric, fabric);
-			else
-				print_node(n, NULL);
-		}
-		else
-			fprintf(stderr, "Failed to find port: %s\n", guid_str);
-	} else if (!all && dr_path) {
-		ibnd_port_t *p = NULL;
-		uint8_t ni[IB_SMP_DATA_SIZE] = { 0 };
-
-		if (!smp_query_via(ni, &port_id, IB_ATTR_NODE_INFO, 0,
-				   ibd_timeout, ibmad_port))
-			return -1;
-		mad_decode_field(ni, IB_NODE_PORT_GUID_F, &(guid));
-
-		p = ibnd_find_port_guid(fabric, guid);
-		if (p && (!only_flag || p->node->type == only_type)) {
-			ibnd_node_t *n = p->node;
-			if (diff_fabric)
-				diff_node(n, diff_fabric, fabric);
-			else
-				print_node(n, NULL);
-		}
-		else
-			fprintf(stderr, "Failed to find port: %s\n", dr_path);
-	} else {
-		if (diff_fabric)
-			diff_node(NULL, diff_fabric, fabric);
-		else {
-			if (only_flag)
-				ibnd_iter_nodes_type(fabric, print_node,
-						     only_type, NULL);
-			else
-				ibnd_iter_nodes(fabric, print_node, NULL);
-		}
-	}
+#ifdef HAVE_XML
+	if (generate_config)
+		rc = generate_from_fabric(fabric, generate_config, node_name_map,
+					ignore_regex, print_missing);
+	else if (check_mode) {
+		check_flags.all = all;
+		check_flags.guid_str = guid_str;
+		check_flags.guid = guid;
+		check_flags.dr_path = dr_path;
+		rc = check_links(&port_id, ibmad_port, fabric, node_name_map,
+				&check_flags);
+	} else
+#endif
+		rc = print_links(&port_id, ibmad_port, fabric, diff_fabric);
 
 	ibnd_destroy_fabric(fabric);
 	if (diff_fabric)
