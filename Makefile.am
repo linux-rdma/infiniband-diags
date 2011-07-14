@@ -6,7 +6,8 @@ endif
 SUBDIRS = libibnetdisc $(IBFABRICCONF)
 
 INCLUDES = -I$(top_builddir)/include/ -I$(srcdir)/include -I$(includedir) \
-	-I$(includedir)/infiniband -I$(top_srcdir)/libibnetdisc/include
+	-I$(includedir)/infiniband -I$(top_srcdir)/libibnetdisc/include \
+	-I$(top_srcdir)/libibfabricconf/include
 
 if DEBUG
 DBGFLAGS = -ggdb -D_DEBUG_
@@ -18,7 +19,8 @@ sbin_PROGRAMS = src/ibaddr src/ibnetdiscover src/ibping src/ibportstate \
 	        src/ibroute src/ibstat src/ibsysstat src/ibtracert \
 	        src/perfquery src/sminfo src/smpdump src/smpquery \
 	        src/saquery src/vendstat src/iblinkinfo \
-		src/ibqueryerrors src/ibcacheedit
+			  src/ibqueryerrors src/ibcacheedit
+
 
 if ENABLE_TEST_UTILS
 sbin_PROGRAMS += src/ibsendtrap src/mcm_rereg_test
@@ -64,12 +66,21 @@ src_saquery_SOURCES = src/saquery.c
 src_ibsendtrap_SOURCES = src/ibsendtrap.c
 src_vendstat_SOURCES = src/vendstat.c
 src_mcm_rereg_test_SOURCES = src/mcm_rereg_test.c
-src_iblinkinfo_SOURCES = src/iblinkinfo.c
-src_iblinkinfo_LDFLAGS = -L$(top_builddir)/libibnetdisc -libnetdisc
 src_ibqueryerrors_SOURCES = src/ibqueryerrors.c
 src_ibqueryerrors_LDFLAGS = -L$(top_builddir)/libibnetdisc -libnetdisc
 src_ibcacheedit_SOURCES = src/ibcacheedit.c
 src_ibcacheedit_LDFLAGS = -L$(top_builddir)/libibnetdisc -libnetdisc
+
+if HAVE_XML
+src_iblinkinfo_SOURCES = src/iblinkinfo.c src/checkfabric.c src/checkfabric.h
+src_iblinkinfo_CFLAGS = $(GLIB_CFLAGS)
+src_iblinkinfo_LDFLAGS = -losmcomp -libmad \
+	-L$(top_builddir)/libibnetdisc -libnetdisc \
+	-L$(top_builddir)/libibfabricconf -libfabricconf $(GLIB_LIBS)
+else
+src_iblinkinfo_SOURCES = src/iblinkinfo.c
+src_iblinkinfo_LDFLAGS = -L$(top_builddir)/libibnetdisc -libnetdisc
+endif
 
 man_MANS = man/ibaddr.8 man/ibcheckerrors.8 man/ibcheckerrs.8 \
 	man/ibchecknet.8 man/ibchecknode.8 man/ibcheckport.8 \
@@ -86,6 +97,7 @@ man_MANS = man/ibaddr.8 man/ibcheckerrors.8 man/ibcheckerrs.8 \
 	man/ibrouters.8 man/ibprintrt.8 man/ibidsverify.8 \
 	man/check_lft_balance.8 man/ibcacheedit.8 \
 	man/infiniband-diags.8
+
 
 BUILT_SOURCES = ibdiag_version
 ibdiag_version:
