@@ -6,7 +6,8 @@ endif
 SUBDIRS = libibnetdisc $(IBFABRICCONF)
 
 INCLUDES = -I$(top_builddir)/include/ -I$(srcdir)/include -I$(includedir) \
-	-I$(includedir)/infiniband -I$(top_srcdir)/libibnetdisc/include
+	-I$(includedir)/infiniband -I$(top_srcdir)/libibnetdisc/include \
+	-I$(top_srcdir)/libibfabricconf/include
 
 if DEBUG
 DBGFLAGS = -ggdb -D_DEBUG_
@@ -113,14 +114,23 @@ src_saquery_SOURCES = src/saquery.c
 src_ibsendtrap_SOURCES = src/ibsendtrap.c
 src_vendstat_SOURCES = src/vendstat.c
 src_mcm_rereg_test_SOURCES = src/mcm_rereg_test.c
-src_iblinkinfo_SOURCES = src/iblinkinfo.c
 src_ibccquery_SOURCES = src/ibccquery.c
 src_ibccconfig_SOURCES = src/ibccconfig.c
-src_iblinkinfo_LDFLAGS = -L$(top_builddir)/libibnetdisc -libnetdisc
 src_ibqueryerrors_SOURCES = src/ibqueryerrors.c
 src_ibqueryerrors_LDFLAGS = -L$(top_builddir)/libibnetdisc -libnetdisc
 src_ibcacheedit_SOURCES = src/ibcacheedit.c
 src_ibcacheedit_LDFLAGS = -L$(top_builddir)/libibnetdisc -libnetdisc
+
+if HAVE_XML
+src_iblinkinfo_SOURCES = src/iblinkinfo.c src/checkfabric.c src/checkfabric.h
+src_iblinkinfo_CFLAGS = $(GLIB_CFLAGS)
+src_iblinkinfo_LDFLAGS = -losmcomp -libmad \
+	-L$(top_builddir)/libibnetdisc -libnetdisc \
+	-L$(top_builddir)/libibfabricconf -libfabricconf $(GLIB_LIBS)
+else
+src_iblinkinfo_SOURCES = src/iblinkinfo.c
+src_iblinkinfo_LDFLAGS = -L$(top_builddir)/libibnetdisc -libnetdisc
+endif
 
 BUILT_SOURCES = ibdiag_version
 ibdiag_version:
