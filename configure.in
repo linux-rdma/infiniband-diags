@@ -158,6 +158,13 @@ IBSCRIPTPATH_TMP2="`echo $IBSCRIPTPATH_TMP1 | sed 's/^NONE/$ac_default_prefix/'`
 IBSCRIPTPATH="${with_ibpath_override:-`eval echo $IBSCRIPTPATH_TMP2`}"
 AC_SUBST(IBSCRIPTPATH)
 
+dnl check for glib
+PKG_CHECK_MODULES([GLIB], [glib-2.0], ac_glib=yes, ac_glib=no)
+AM_CONDITIONAL([HAVE_GLIB], test "$ac_glib" = "yes")
+if test "$ac_glib" = "yes"; then
+   AC_DEFINE([HAVE_GLIB], 1, [Define to 1 to indicate GLIB support])
+fi
+
 dnl Begin libibfabricconf stuff
 dnl find the XML support for ibfabricconf
 PKG_CHECK_MODULES([XML], [libxml-2.0], ac_xml=yes, ac_xml=no)
@@ -210,5 +217,6 @@ AC_CONFIG_FILES([\
 	libibnetdisc/Makefile \
 	libibfabricconf/Makefile \
 	libibfabricconf/include/infiniband/ibfabricconf.h \
+	man/iblinkinfo.8 \
 ])
 AC_OUTPUT
