@@ -851,7 +851,7 @@ void sa_report_err(int status)
 		status, sm_err_str, sa_err_str);
 }
 
-static unsigned int get_max(unsigned int num)
+unsigned int get_max(unsigned int num)
 {
 	unsigned r = 0;		// r will be lg(num)
 

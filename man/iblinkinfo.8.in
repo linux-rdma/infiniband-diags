@@ -1,0 +1,163 @@
+.TH IBLINKINFO 8 "Jan 24, 2008" "OpenIB" "OpenIB Diagnostics"
+
+.SH NAME
+iblinkinfo \- report link info for all links in the fabric
+
+.SH SYNOPSIS
+.B iblinkinfo
+   [-hcdl -C <ca_name> -P <ca_port> -p -S <port_guid> -G <port_guid> -D <direct_route> \-\-load\-cache <filename>]
+
+.SH DESCRIPTION
+.PP
+iblinkinfo reports link information for each port in an IB fabric, node by node.
+Optionally, iblinkinfo can do partial scans and limit its output to parts of a
+fabric.
+
+Alternately, in "check mode" iblinkinfo scans an attached IB fabric, reads the
+ib fabric config file, and checks the two.  Checks performed include invalid
+cabling, downed/disabled ports, invalid speed, and invalid width's.
+
+While iblinkinfo can create it's config file from a scan of an IB fabric this
+is not the intended use case.  The fabric config is intended to document the
+desired cabling and properties of an IB fabric, generated from vendor cabling
+documentation.  This document can then be verified against reality by
+iblinkinfo -c.  For simply diffing the fabric from one run to the next both
+ibnetdiscover and iblinkinfo have cache capabilities.
+
+"man infiniband-diags" for more information on the ibfabricconf.xml file format.
+
+.SH OPTIONS
+
+.PP
+See infiniband-diags(8) for common options.
+
+.PP
+.TP
+\fB\-S <port_guid>\fR \fB\-G <port_guid>\fR \fB\-\-port\-guid\fR
+start partial scan at the port specified by <port_guid> (hex format)
+.TP
+\fB\-D <direct_route>\fR
+start partial scan at the port specified by the direct route path.
+.TP
+\fB\-l\fR
+Print all information for each link on one line. Default is to print a header
+with the node information and then a list for each port (useful for
+grep\'ing output).
+.TP
+\fB\-d\fR
+Print only nodes which have a port in the "Down" state.
+.TP
+\fB\-p\fR
+Print additional port settings (<LifeTime>,<HoqLife>,<VLStallCount>)
+.TP
+\fB\-C <ca_name>\fR    use the specified ca_name for the search.
+.TP
+\fB\-P <ca_port>\fR    use the specified ca_port for the search.
+.TP
+\fB\-R\fR (This option is obsolete and does nothing)
+.TP
+\fB\-\-load\-cache\fR <filename>
+Load and use the cached ibnetdiscover data stored in the specified
+filename.  May be useful for outputting and learning about other
+fabrics or a previous state of a fabric.  Cannot be used if user
+specifies a direct route path.  See
+.B ibnetdiscover
+for information on caching ibnetdiscover output.
+.TP
+\fB\-\-diff\fR <filename>
+Load cached ibnetdiscover data and do a diff comparison to the current
+network or another cache.  A special diff output for iblinkinfo
+output will be displayed showing differences between the old and current
+fabric links.  Be default, the following are compared for differences:
+port connections and port state.  See
+.B ibnetdiscover
+for information on caching ibnetdiscover output.
+.TP
+\fB\-\-diffcheck\fR <key(s)>
+Specify what diff checks should be done in the \fB\-\-diff\fR option above.
+Comma separate multiple diff check key(s).  The available diff checks
+are:\fIport\fR = port connections, \fIstate\fR = port state, \fIlid\fR = lids,
+\fInodedesc\fR = node descriptions.  If \fIport\fR is specified alongside \fIlid\fR
+or \fInodedesc\fR, remote port lids and node descriptions will also be compared.
+.TP
+\fB\-\-filterdownports\fR <filename>
+Filter downports indicated in a ibnetdiscover cache.  If a port was previously
+indicated as down in the specified cache, and is still down, do not output it in the
+resulting output.  This option may be particularly useful for environments
+where switches are not fully populated, thus much of the default iblinkinfo
+info is considered unuseful.  See
+.B ibnetdiscover
+for information on caching ibnetdiscover output.
+
+.TP
+\fB\-\-switches\-only\fR
+Show only switches in output. (does not affect "check" mode)
+.TP
+\fB\-\-cas\-only\fR
+Show only CAs in output. (does not affect "check" mode)
+
+
+.SH CHECK OPTIONS
+.TP
+"Check" and "generate" options apply only when XML support was enabled for the build.
+
+.TP
+\fB\-\-check, \-f\fR
+Check links against ibfabricconf.xml config.
+
+.TP
+\fB\-\-ibfabricconf <ibfabricconf>\fR
+Specify an alternate ibfabricconf.xml file (default: @IBDIAG_CONFIG_PATH@/ibfabricconf.xml)
+
+.TP
+\fB\-\-downnodes <nodelist>\fR
+Specify nodes which are known to be off thus indicating that links to those
+nodes are known to be down.  "nodelist" is a comma separated list of node
+description names.
+
+.TP
+\fB\-\-smlid <lid>\fR
+Specify an smlid to verify on all active ports.
+
+.TP
+\fB\-\-addr-info <lid>\fR
+Print port GUID and LID information for the ports being reported as errors.
+
+
+.SH GENERATE OPTIONS
+
+Although not the intended use case for this utility is it understood that the
+generation of this config file from an existing fabric can be very useful.  The
+following options allow for this.
+
+.TP
+\fB\-\-generate\-config <config>\fR
+Generate a config file from a scan of the fabric.  NOTE that this config file
+is somewhat generic in nature as it does not include any link parameters such
+as speed or width.  Most fabrics are somewhat homogeneous in nature.  It is
+intended that this config file be modified with these parameters as global
+settings.
+
+.TP
+\fB\-\-ignore <regex>\fR
+when generating a config skip nodes matching <regex>
+
+.TP
+\fB\-\-missing\fR
+insert place holders for disconnected ports
+
+.SH FILES
+
+iblinkinfo makes use of the ibfabricconf.xml and ib-node-name-map file.  See
+infiniband-diags for descriptions of those file formats.
+
+.SH EXIT STATUS
+
+0 on success, -1 on failure.
+
+If check mode is used return 1 if inconsistencies are found, otherwise 0.
+
+.SH AUTHOR
+.TP
+Ira Weiny
+.RI < weiny2@llnl.gov >
