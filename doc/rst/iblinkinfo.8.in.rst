@@ -23,6 +23,9 @@ iblinkinfo reports link info for each port in an IB fabric, node by node.
 Optionally, iblinkinfo can do partial scans and limit its output to parts of a
 fabric.
 
+Finally, iblinkinfo can check the links it finds against the IB fabric config
+file to verify fabric connectivity.
+
 OPTIONS
 =======
 
@@ -111,6 +114,17 @@ Debugging flags
 
 **-R** (This option is obsolete and does nothing)
 
+Check flags
+-----------
+
+.. include:: common/opt_f-check.rst
+.. include:: common/opt_ibfabricconf.rst
+.. include:: common/opt_downnodes.rst
+.. include:: common/opt_smlid.rst
+.. include:: common/opt_addr_info.rst
+.. include:: common/sec_generate-ibfabricconf.rst
+
+
 EXIT STATUS
 ===========
 
@@ -124,6 +138,7 @@ FILES
 
 .. include:: common/sec_node-name-map.rst
 
+.. include:: common/sec_check-file.rst
 
 AUTHOR
 ======

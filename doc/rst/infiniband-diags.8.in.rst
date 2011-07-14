@@ -84,6 +84,17 @@ Configuration flags
 .. include:: common/opt_z-config.rst
 
 
+Check flags
+-----------
+
+.. include:: common/opt_f-check.rst
+.. include:: common/opt_ibfabricconf.rst
+.. include:: common/opt_downnodes.rst
+.. include:: common/opt_smlid.rst
+.. include:: common/opt_addr_info.rst
+
+.. include:: common/sec_generate-ibfabricconf.rst
+
 
 COMMON FILES
 ============
@@ -93,8 +104,10 @@ The following config files are common amongst many of the utilities.
 .. include:: common/sec_config-file.rst
 
 .. include:: common/sec_node-name-map.rst
-.. include:: common/sec_topology-file.rst
 
+.. include:: common/sec_check-file.rst
+
+.. include:: common/sec_topology-file.rst
 
 
 Utilities list
