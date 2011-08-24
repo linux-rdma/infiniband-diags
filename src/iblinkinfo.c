@@ -84,9 +84,6 @@ static int addr_info = 0;
 
 #ifdef HAVE_XML
 #include <infiniband/ibfabricconf.h>
-
-#ifdef HAVE_XML
-#include <infiniband/ibfabricconf.h>
 #include "checkfabric.h"
 
 static int check_mode = 0;
