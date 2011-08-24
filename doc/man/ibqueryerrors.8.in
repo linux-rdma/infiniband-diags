@@ -42,6 +42,11 @@ Error fields can also be suppressed entirely.
 In addition to reporting errors on every port.  ibqueryerrors can report the
 port transmit and receive data as well as report full link information to the
 remote port if available.
+.sp
+Finally, ibqueryerrors can check the links it finds against the IB fabric config
+file to verify fabric connectivity.  This is duplicate functionality of
+iblinkinfo but prevents a second Direct Route scan of the fabric, thus reducing
+fabric distruption.
 .SH OPTIONS
 .sp
 \fB\-s, \-\-suppress <err1,err2,...>\fP
@@ -237,6 +242,30 @@ May be used several times (\-vv or \-v \-v \-v)
 \fB\-V, \-\-version\fP     show the version info.
 .sp
 \fB\-R\fP  (This option is obsolete and does nothing)
+.SS Check flags
+.\" Define the common option -f
+.
+.sp
+\fB\-f, \-\-check\fP  Check links against ibfabricconf.xml config.
+.\" Define the common option --ibfabricconf
+.
+.sp
+\fB\-\-ibfabricconf <ibfabricconf>\fP  Specify an alternate ibfabricconf.xml file (default: @IBDIAG_CONFIG_PATH@/ibfabricconf.xml)
+.\" Define the common option --downnodes
+.
+.sp
+\fB\-\-downnodes <nodelist>\fP
+Specify nodes which are known to be off thus indicating that links to those
+nodes are known to be down.  "nodelist" is a comma separated list of node
+description names.
+.\" Define the common option --smlid
+.
+.sp
+\fB\-\-smlid <lid>\fP  Specify an smlid to verify on all active ports.
+.\" Define the common option --addr-info
+.
+.sp
+\fB\-\-addr\-info\fP  Print port GUID and LID information for the ports being reported as errors.
 .SH EXIT STATUS
 .sp
 \fB\-1\fP if scan fails.
@@ -313,6 +342,169 @@ for the file location for your installation.
 0x0008f10400411a28 "SW2  (Rack  3) ISR9024 Voltaire 9024D"
 0x0008f10400411a34 "SW3  (Rack  3) ISR9024 Voltaire 9024D"
 0x0008f104004119d0 "SW4  (Rack  3) ISR9024 Voltaire 9024D"
+.ft P
+.fi
+.\" Common text for the ibfabricconf file
+.
+.SS IB FABRIC CONFIG FILE
+.sp
+NOTE: IB FABRIC CONFIG FILE support is only available when XML support was
+enabled at build time.
+.sp
+@IBDIAG_CONFIG_PATH@/ibfabricconf.xml
+.sp
+This global config file is provided to describe the IB fabric to some of the
+diagnostics for verification of the fabric.  This file provides a list of link
+definitions which provide a "logical" view of the fabric via node names and
+ports.  This config file also provides for the configuration of link
+speed/width for sets of "links".
+.sp
+This config file has the following features:
+.INDENT 0.0
+.INDENT 3.5
+.INDENT 0.0
+.IP \(bu 2
+.
+A logical view of the fabric is described by this file. (ie entry\(aqs are
+"name" based)
+.INDENT 2.0
+.INDENT 3.5
+.sp
+There are no GUID\(aqs, LIDs, etc.  As such misnamed nodes (possibly
+supplied by the config file "ib\-node\-name\-map" or by
+miss\-programmed node description fields) will show up as errors.
+The reason for this is that this config file is designed to be used by
+system admins to debug problems in a known network layout.  GUID\(aqs can
+change as bad hardware is swapped out.  Therefore a logical view
+of the fabric is much more useful and presented in
+ibfabricconf.xml
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+.
+Ports which are not specified are assumed to be down.
+.INDENT 2.0
+.INDENT 3.5
+.sp
+Checks during a fabric scan will report active links on those ports as errors.
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+.
+Properties are inherited from parent to child in the XML.
+.INDENT 2.0
+.INDENT 3.5
+.sp
+For example if the entire fabric is to be 4X/QDR then only the
+fabric XML tag needs to be specified as \(aqspeed="QDR" width="4X"\(aq.
+However, any link/node specification can  have  properties  set
+which overrides itself and it\(aqs children.
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+.
+Ports which are listed a second time will over ride the previous entry.
+.INDENT 2.0
+.INDENT 3.5
+.sp
+This is very useful for overriding the internal links of the
+large switches after using the "chassis" tag.  On the other hand
+caution should be used in generating your config files.
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+.
+Common "chassis" configs can be included using the "chassis" tag.
+.INDENT 2.0
+.INDENT 3.5
+.sp
+This makes defining the internal connections of large switches very
+easy.  Using a chassis tag will automatically create all the internal
+links for those switches.  The name of the chassis will be prepended to
+the internal switches found in the chassis.  For example:
+.sp
+.nf
+.ft C
+<chassis name="ibcore1" model="QLogic_9240"></chassis>
+.ft P
+.fi
+.sp
+results to the following names:
+.sp
+.nf
+.ft C
+"ibcore1 SP1a", "ibcore1 SP1b", etc.
+
+"ibcore1 L1a", "ibcore1 L2a", "ibcore1 Leaf 3 Chip A", etc.
+.ft P
+.fi
+.sp
+Internal switch names can be changed if the names used in the config file are not sufficient.
+.INDENT 0.0
+.INDENT 3.5
+.sp
+(See @IBDIAG_CONFIG_PATH@/chassis_fabricconfs for a list of
+chassis which have alredy been defined.  Submissions of additional
+chasis config files are always welcome.)
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.IP \(bu 2
+.
+A "subfabric" tag allows you to specify the properties for a group of entries.
+.UNINDENT
+.UNINDENT
+.UNINDENT
+.sp
+Example file:
+.sp
+.nf
+.ft C
+<?xml version="1.0" encoding="ISO\-8859\-1"?>
+<!DOCTYPE ibfabric>
+
+<ibfabric name="test fabric" schemaVersion="1.0">
+        <property name="type">QSFP</property>
+        <chassis name="test chassis" model="QLogic_9240"></chassis>
+        <linklist name="SDR switch" speed="SDR">
+                <port num="1"><r_port>1</r_port><r_node>SDR node</r_node></port>
+        </linklist>
+        <linklist name="DDR switch" speed="DDR">
+                <port num="1"><r_port>1</r_port><r_node>DDR node</r_node></port>
+        </linklist>
+        <linklist name="QDR switch" speed="QDR">
+                <port num="1"><r_port>1</r_port><r_node>QDR node</r_node></port>
+        </linklist>
+        <linklist name="FDR switch" speed="FDR">
+                <port num="1"><r_port>1</r_port><r_node>FDR node</r_node></port>
+        </linklist>
+        <linklist name="FDR10 switch" speed="FDR10">
+                <port num="1"><r_port>1</r_port><r_node>FDR10 node</r_node></port>
+        </linklist>
+        <linklist name="EDR switch" speed="EDR">
+                <port num="1"><r_port>1</r_port><r_node>EDR node</r_node></port>
+        </linklist>
+        <linklist name="1x switch" width="1x">
+                <port num="1"><r_port>1</r_port><r_node>1x node</r_node></port>
+        </linklist>
+        <linklist name="4x switch" width="4x">
+                <port num="1"><r_port>1</r_port><r_node>4x node</r_node></port>
+        </linklist>
+        <linklist name="8x switch" width="8x">
+                <port num="1"><r_port>1</r_port><r_node>8x node</r_node></port>
+        </linklist>
+        <linklist name="12x switch" width="12x">
+                <port num="1"><r_port>1</r_port><r_node>12x node</r_node></port>
+        </linklist>
+        <subfabric width="1x" speed="SDR">
+                <property name="color">blue</property>
+                <!\-\- blue sub fabric \-\->
+                <linklist name="1X SDR blue switch">
+                        <port num="1"><r_port>2</r_port><r_node>SDR blue node</r_node></port>
+                </linklist>
+        </subfabric>
+</ibfabric>
 .ft P
 .fi
 .SH AUTHOR
