@@ -75,6 +75,33 @@ for information on caching ibnetdiscover output.
 .TP
 \fB\-R\fR  (This option is obsolete and does nothing)
 
+.SH CHECK OPTIONS
+.TP
+"Check" options apply only when XML support was enabled for the build.
+
+.TP
+\fB\-check, \-f\fR
+Check links against ibfabricconf.xml config.
+
+.TP
+\fB\-config <ibfabricconf>\fR
+Specify an alternate config file (default: @IBDIAG_CONFIG_PATH@/ibfabricconf.xml)
+
+.TP
+\fB\-\-downnodes <nodelist>\fR
+Specify nodes which are known to be off thus indicating that links to those
+nodes are known to be down.  "nodelist" is a comma separated list of node
+description names.
+
+.TP
+\fB\-\-smlid <lid>\fR
+Specify an smlid to verify on all active ports.
+
+.TP
+\fB\-\-addr-info <lid>\fR
+Print port GUID and LID information for the ports being reported as errors.
+
+
 .SH COMMON OPTIONS
 .PP
 \-d      raise the IB debugging level.
@@ -101,7 +128,7 @@ for information on caching ibnetdiscover output.
 
 If a failure to scan the fabric occurs return -1.  If the scan succeeds without
 errors beyond thresholds return 0.  If errors are found on ports beyond
-thresholds return 1.
+thresholds or if check mode is used and inconsistencies are found, return 1.
 
 .SH FILES
 

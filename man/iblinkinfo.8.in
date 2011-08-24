@@ -110,8 +110,7 @@ Specify an smlid to verify on all active ports.
 
 .TP
 \fB\-\-addr-info <lid>\fR
-Print GUID and LID information for the ports being reported as errors.  The
-GUID defaults to node GUID but can be requested as port GUID with '-g'.
+Print port GUID and LID information for the ports being reported as errors.
 
 
 .SH GENERATE OPTIONS

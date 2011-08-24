@@ -664,15 +664,15 @@ ignore:
 }
 
 
-int generate_from_fabric(ibnd_fabric_t *fabric, char *generate, nn_map_t *name_map,
+int generate_from_fabric(ibnd_fabric_t *fabric, char *generate_file, nn_map_t *name_map,
 			char *ignore_regex, int print_missing)
 {
 	print_node_data_t data;
-	FILE *fp = fopen(generate, "w+");
+	FILE *fp = fopen(generate_file, "w+");
 	node_name_map = name_map;
 
 	if (!fp) {
-		fprintf(stderr, "Failed to open %s: %s\n", generate, strerror(errno));
+		fprintf(stderr, "Failed to open %s: %s\n", generate_file, strerror(errno));
 		return 1;
 	}
 
@@ -696,23 +696,16 @@ int check_links(ib_portid_t *port_id,
 		struct ibmad_port *ibmad_port,
 		ibnd_fabric_t *fabric,
 		nn_map_t *name_map,
-		int all,
-		char *guid_str,
-		uint64_t guid,
-		char *dr_path,
-		char *downnodes_str,
-		char *fabricconffile,
-		uint16_t sm_lid,
-		int addr_info)
+		check_flags_t *flags)
 {
 	int rc = 0;
 	node_name_map = name_map;
 	ibnd_port_t *p = NULL;
-	smlid = sm_lid;
-	print_addr_info = addr_info;
+	smlid = flags->sm_lid;
+	print_addr_info = flags->print_addr_info;
 
-	if (downnodes_str)
-		downnodes = nodelist_create(downnodes_str);
+	if (flags->downnodes_str)
+		downnodes = nodelist_create(flags->downnodes_str);
 
 	fabricconf = ibfc_alloc_conf();
 	if (!fabricconf) {
@@ -721,27 +714,28 @@ int check_links(ib_portid_t *port_id,
 	}
 	ibfc_set_warn_dup(fabricconf, 1);
 
-	printf("Reading fabric conf file:\n");
+	printf("Reading fabric conf file... ");
 
-	if (ibfc_parse_file(fabricconffile, fabricconf)) {
+	if (ibfc_parse_file(flags->fabricconffile, fabricconf)) {
 		fprintf(stderr, "WARN: Failed to parse link config file...\n");
 		ibfc_free(fabricconf);
 		fabricconf = NULL;
 		check_node_rc = -1;
 	}
 
-	printf("Collecting port information:\n");
+	printf("\nEvaluating connectively...\n");
 
-	if (!all && guid_str) {
-		if ((p = ibnd_find_port_guid(fabric, guid)) != NULL) {
+	if (!flags->all && flags->guid_str) {
+		if ((p = ibnd_find_port_guid(fabric, flags->guid)) != NULL) {
 			check_node(p->node, NULL);
 			rc = check_node_rc;
 		} else {
 			fprintf(stderr, "Failed to find port: %s\n",
-				guid_str);
+				flags->guid_str);
 			rc = -1;
 		}
-	} else if (!all && dr_path) {
+	} else if (!flags->all && flags->dr_path) {
+		uint64_t guid;
 		uint8_t ni[IB_SMP_DATA_SIZE] = { 0 };
 
 		if (!smp_query_via(ni, port_id, IB_ATTR_NODE_INFO, 0,
@@ -749,13 +743,14 @@ int check_links(ib_portid_t *port_id,
 			rc = -1;
 			goto Exit;
 		}
-		mad_decode_field(ni, IB_NODE_GUID_F, &(guid));
+		mad_decode_field(ni, IB_NODE_GUID_F, &guid);
 
 		if ((p = ibnd_find_port_guid(fabric, guid)) != NULL) {
 			check_node(p->node, NULL);
 			rc = check_node_rc;
 		} else {
-			fprintf(stderr, "Failed to find node: %s\n", dr_path);
+			fprintf(stderr, "Failed to find node: %s\n",
+				flags->dr_path);
 			rc = -1;
 		}
 	} else {

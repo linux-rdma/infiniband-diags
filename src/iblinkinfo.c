@@ -85,13 +85,16 @@ static int addr_info = 0;
 #ifdef HAVE_XML
 #include <infiniband/ibfabricconf.h>
 
-static char *generate = NULL;
+#ifdef HAVE_XML
+#include <infiniband/ibfabricconf.h>
+#include "checkfabric.h"
+
 static int check_mode = 0;
-static char *downnodes_str = NULL;
-static char *fabricconffile = NULL;
+static char *generate_config = NULL;
 static char *ignore_regex = NULL;
 static int print_missing = 0;
-static uint16_t smlid = 0;
+
+check_flags_t check_flags;
 #endif
 
 int filterdownport_check(ibnd_node_t * node, ibnd_port_t * port)
@@ -562,30 +565,32 @@ static int process_opt(void *context, int ch, char *optarg)
 	case 5:
 		filterdownports_cache_file = strdup(optarg);
 		break;
-	case 6:
-		fabricconffile = strdup(optarg);
-		break;
-	case 7: /* downnodes */
-		downnodes_str = strdup(optarg);
-		break;
-	case 8:
-		generate = strdup(optarg);
-		break;
-	case 9:
-		ignore_regex = strdup(optarg);
-		break;
-	case 10:
-		print_missing = 1;
-		break;
-	case 11:
-		smlid = (uint16_t)strtoul(optarg, NULL, 0);
-		break;
-	case 12:
-		addr_info = 1;
-		break;
-	case 'c':
+#ifdef HAVE_XML
+	case 'c': /* check */
 		check_mode = 1;
 		break;
+	case 6: /* config */
+		check_flags.fabricconffile = strdup(optarg);
+		break;
+	case 7: /* downnodes */
+		check_flags.downnodes_str = strdup(optarg);
+		break;
+	case 8: /* smlid */
+		check_flags.sm_lid = (uint16_t)strtoul(optarg, NULL, 0);
+		break;
+	case 9: /* addr-info */
+		check_flags.print_addr_info = 1;
+		break;
+	case 10: /* generate-config */
+		generate_config = strdup(optarg);
+		break;
+	case 11: /* ignore */
+		ignore_regex = strdup(optarg);
+		break;
+	case 12: /* missing */
+		print_missing = 1;
+		break;
+#endif /* HAVE_XML */
 	case 'S':
 	case 'G':
 		guid_str = optarg;
@@ -670,24 +675,18 @@ int main(int argc, char **argv)
 		{"downnodes", 7, 1, "<nodelist>",
 		 "with '-c': specify nodes which are known to be off.  "
 		 "Suppreses \"down port\" errors on links connected to those nodes"},
-		{"smlid", 11, 1, "<smlid>",
+		{"smlid", 8, 1, "<smlid>",
 		 "with '-c': specify an smlid to verify on all active ports\n"},
-		{"addr-info", 12, 0, "",
+		{"addr-info", 9, 0, "",
 		 "with '-c': print node/port GUID and LID information \n"},
 
-		{"generate-config", 8, 1, "<config>",
+		{"generate-config", 10, 1, "<config>",
 		 "generate a config file"},
-		{"ignore", 9, 1, "<regex>",
+		{"ignore", 11, 1, "<regex>",
 		 "with '--generate-config': skip nodes matching regex"},
-		{"missing", 10, 1, "<missing>",
+		{"missing", 12, 1, "<missing>",
 		 "with '--generate-config': insert place holders for dissconnected ports\n"},
 #endif
-		{"load-cache", 2, 1, "<file>",
-		 "filename of ibnetdiscover cache to load"},
-		{"diff", 3, 1, "<file>",
-		 "filename of ibnetdiscover cache to diff"},
-		{"diffcheck", 4, 1, "<key(s)>",
-		 "specify checks to execute for --diff\n"},
 		{"GNDN", 'R', 0, NULL,
 		 "(This option is obsolete and does nothing)\n"
 		"Common Options:\n"},
@@ -768,14 +767,17 @@ int main(int argc, char **argv)
 	}
 
 #ifdef HAVE_XML
-	if (generate)
-		rc = generate_from_fabric(fabric, generate, node_name_map,
+	if (generate_config)
+		rc = generate_from_fabric(fabric, generate_config, node_name_map,
 					ignore_regex, print_missing);
-	else if (check_mode)
+	else if (check_mode) {
+		check_flags.all = all;
+		check_flags.guid_str = guid_str;
+		check_flags.guid = guid;
+		check_flags.dr_path = dr_path;
 		rc = check_links(&port_id, ibmad_port, fabric, node_name_map,
-				all, guid_str, guid, dr_path, downnodes_str,
-				fabricconffile, smlid, addr_info);
-	else
+				&check_flags);
+	} else
 #endif
 		rc = print_links(&port_id, ibmad_port, fabric, diff_fabric);
 

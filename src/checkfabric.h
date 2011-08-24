@@ -34,7 +34,19 @@
 #ifndef __CHECK_FABRIC_H_
 #define __CHECK_FABRIC_H_
 
-int generate_from_fabric(ibnd_fabric_t *fabric, char *generate,
+/* check flags */
+typedef struct {
+	int all;
+	char *guid_str;
+	uint64_t guid;
+	char *dr_path;
+	char *downnodes_str;
+	char *fabricconffile;
+	uint16_t sm_lid;
+	int print_addr_info;
+} check_flags_t;
+
+int generate_from_fabric(ibnd_fabric_t *fabric, char *generate_file,
 			nn_map_t *name_map, char *ignore_regex,
 			int print_missing);
 
@@ -42,15 +54,7 @@ int check_links(ib_portid_t *port_id,
 		struct ibmad_port *ibmad_port,
 		ibnd_fabric_t *fabric,
 		nn_map_t *name_map,
-		/* flags */
-		int all,
-		char *guid_str,
-		uint64_t guid,
-		char *dr_path,
-		char *downnodes_str,
-		char *fabricconffile,
-		uint16_t sm_lid,
-		int print_addr_info);
+		check_flags_t *flags);
 
 #endif /* __CHECK_FABRIC_H_ */
 
