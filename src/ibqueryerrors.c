@@ -73,6 +73,14 @@ char *dr_path = NULL;
 uint8_t node_type_to_print = 0;
 unsigned clear_errors = 0, clear_counts = 0, details = 0;
 
+#ifdef HAVE_XML
+#include <infiniband/ibfabricconf.h>
+#include "checkfabric.h"
+
+static int check_mode = 0;
+check_flags_t check_flags;
+#endif
+
 #define PRINT_SWITCH 0x1
 #define PRINT_CA     0x2
 #define PRINT_ROUTER 0x4
@@ -822,6 +830,23 @@ static int process_opt(void *context, int ch, char *optarg)
 	case 9:
 		data_counters_only = 1;
 		break;
+#ifdef HAVE_XML
+	case 'f': /* check */
+		check_mode = 1;
+		break;
+	case 10: /* ibfabricconf */
+		check_flags.fabricconffile = strdup(optarg);
+		break;
+	case 11: /* downnodes */
+		check_flags.downnodes_str = strdup(optarg);
+		break;
+	case 12: /* smlid */
+		check_flags.sm_lid = (uint16_t)strtoul(optarg, NULL, 0);
+		break;
+	case 13: /* addr-info */
+		check_flags.print_addr_info = 1;
+		break;
+#endif /* HAVE_XML */
 	case 'G':
 	case 'S':
 		port_guid_str = optarg;
@@ -879,8 +904,6 @@ int main(int argc, char **argv)
 		 "report port link information"},
 		{"threshold-file", 8, 1, NULL,
 		 "specify an alternate threshold file, default: " DEF_THRES_FILE},
-		{"GNDN", 'R', 0, NULL,
-		 "(This option is obsolete and does nothing)"},
 		{"data", 2, 0, NULL, "include data counters for ports with errors"},
 		{"switch", 3, 0, NULL, "print data for switches only"},
 		{"ca", 4, 0, NULL, "print data for CA's only"},
@@ -896,6 +919,23 @@ int main(int argc, char **argv)
 		{"outstanding_smps", 'o', 1, NULL,
 		 "specify the number of outstanding SMP's which should be "
 		 "issued during the scan"},
+#ifdef HAVE_XML
+		{"\nCheck Fabric options:\n", 255, 0, NULL, ""}, /* dummy option */
+		{"check", 'f', 0, NULL,
+		 "check fabric; against ibfabricconf.xml"},
+		{"ibfabricconf", 10, 1, "<ibfabricconf>",
+		 "with '-f': specify an alternate ibfabricconf.xml file default: "IBFC_DEF_CONFIG},
+		{"downnodes", 11, 1, "<nodelist>",
+		 "with '-f': specify nodes which are known to be off.  "
+		 "Suppreses \"down port\" errors on links connected to those nodes"},
+		{"smlid", 12, 1, "<smlid>",
+		 "with '-f': specify an smlid to verify on all active ports\n"},
+		{"addr-info", 13, 0, "",
+		 "with '-f': print node/port GUID and LID information \n"},
+#endif /* HAVE_XML */
+		{"GNDN", 'R', 0, NULL,
+		 "(This option is obsolete and does nothing)\n"
+		"Common Options:\n"},
 		{0}
 	};
 	char usage_args[] = "";
@@ -1001,6 +1041,17 @@ int main(int argc, char **argv)
 		ibnd_iter_nodes(fabric, print_node, NULL);
 
 	rc = print_summary();
+#ifdef HAVE_XML
+	if (check_mode) {
+		printf("\n");
+		check_flags.all = 0;
+		check_flags.guid_str = port_guid_str;
+		check_flags.guid = port_guid;
+		check_flags.dr_path = dr_path;
+		rc |= check_links(&portid, ibmad_port, fabric, node_name_map,
+				&check_flags);
+	}
+#endif /* HAVE_XML */
 	if (rc)
 		rc = 1;
 
