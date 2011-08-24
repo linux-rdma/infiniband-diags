@@ -27,6 +27,12 @@ In addition to reporting errors on every port.  ibqueryerrors can report the
 port transmit and receive data as well as report full link information to the
 remote port if available.
 
+Finally, ibqueryerrors can check the links it finds against the IB fabric config
+file to verify fabric connectivity.  This is duplicate functionality of
+iblinkinfo but prevents a second Direct Route scan of the fabric, thus reducing
+fabric distruption.
+
+
 OPTIONS
 =======
 
@@ -86,8 +92,6 @@ Cache File flags
 .. include:: common/opt_load-cache.rst
 
 
-
-
 Port Selection flags
 --------------------
 
@@ -114,6 +118,17 @@ Debugging flags
 .. include:: common/opt_V.rst
 
 **-R**  (This option is obsolete and does nothing)
+
+
+Check flags
+-----------
+
+.. include:: common/opt_f-check.rst
+.. include:: common/opt_ibfabricconf.rst
+.. include:: common/opt_downnodes.rst
+.. include:: common/opt_smlid.rst
+.. include:: common/opt_addr_info.rst
+
 
 EXIT STATUS
 ===========
@@ -148,6 +163,8 @@ Comments begin with '#'
 .. include:: common/sec_config-file.rst
 
 .. include:: common/sec_node-name-map.rst
+
+.. include:: common/sec_check-file.rst
 
 AUTHOR
 ======
