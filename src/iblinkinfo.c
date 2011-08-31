@@ -80,16 +80,6 @@ static int all = 0;
 static int down_links_only = 0;
 static int line_mode = 0;
 static int add_sw_settings = 0;
-static int addr_info = 0;
-
-#ifdef HAVE_XML
-#include <infiniband/ibfabricconf.h>
-#include "checkfabric.h"
-
-static int check_mode = 0;
-static char *generate_config = NULL;
-static char *ignore_regex = NULL;
-static int print_missing = 0;
 
 #ifdef HAVE_XML
 #include <infiniband/ibfabricconf.h>
