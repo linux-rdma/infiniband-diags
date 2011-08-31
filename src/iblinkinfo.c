@@ -91,6 +91,15 @@ static char *generate_config = NULL;
 static char *ignore_regex = NULL;
 static int print_missing = 0;
 
+#ifdef HAVE_XML
+#include <infiniband/ibfabricconf.h>
+#include "checkfabric.h"
+
+static int check_mode = 0;
+static char *generate_config = NULL;
+static char *ignore_regex = NULL;
+static int print_missing = 0;
+
 check_flags_t check_flags;
 #endif
 
