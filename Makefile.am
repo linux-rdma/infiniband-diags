@@ -104,7 +104,6 @@ man_MANS = man/ibaddr.8 man/ibcheckerrors.8 man/ibcheckerrs.8 \
 	man/infiniband-diags.8
 
 
-
 BUILT_SOURCES = ibdiag_version
 ibdiag_version:
 	if [ -x $(top_srcdir)/gen_ver.sh ] ; then \
