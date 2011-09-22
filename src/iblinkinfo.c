@@ -688,7 +688,7 @@ int main(int argc, char **argv)
 		 "generate a config file"},
 		{"ignore", 11, 1, "<regex>",
 		 "with '--generate-config': skip nodes matching regex"},
-		{"missing", 12, 1, "<missing>",
+		{"missing", 12, 0, NULL,
 		 "with '--generate-config': insert place holders for dissconnected ports\n"},
 #endif
 		{"GNDN", 'R', 0, NULL,

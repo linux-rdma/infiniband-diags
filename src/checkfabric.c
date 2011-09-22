@@ -58,6 +58,18 @@
 #include "ibdiag_common.h"
 #include "checkfabric.h"
 
+typedef struct {
+	uint64_t guid;
+} guid_list_item_t;
+typedef struct {
+	FILE *fp;
+	char *ignore_regex;
+	int print_missing;
+	GSList * visited_nodes; /* list guid_list_item_t */
+	int vn_cnt;
+} print_node_data_t;
+
+/* list of node name strings */
 typedef struct nodelist
 {
 	int cnt;
@@ -123,7 +135,7 @@ static nodelist_t * nodelist_create(char *downnodes_str)
 {
 	char *last, *tok;
 	char *tmp_str = strdup(downnodes_str);
-	nodelist_t *rc = calloc(1, sizeof(*rc));
+	nodelist_t *rc = (nodelist_t *)calloc(1, sizeof(*rc));
 
 	if (!rc)
 		return (NULL);
@@ -157,11 +169,10 @@ static void nodelist_destroy(nodelist_t *nodelist)
 
 static int nodelist_find(nodelist_t *nodelist, char *target)
 {
-	int rc = 0;
 	int i = 0;
 	for (i = 0; i < nodelist->cnt; i++) {
 		gpointer t = g_slist_nth_data(nodelist->list, i);
-		if (t && strcmp(t, target) == 0)
+		if (t && strcmp((const char *)t, (const char *)target) == 0)
 			return (1);
 	}
 
@@ -169,9 +180,9 @@ static int nodelist_find(nodelist_t *nodelist, char *target)
 }
 
 
-static void mark_seen(uint64_t guid, int pnum)
+static void mark_port_seen(uint64_t guid, int pnum)
 {
-	port_vis_t *tmp = calloc(1, sizeof *tmp);
+	port_vis_t *tmp = (port_vis_t *)calloc(1, sizeof *tmp);
 	if (!tmp) {
 		fprintf(stderr, "calloc failure\n");
 		exit(1);
@@ -457,9 +468,9 @@ void check_config(char *node_name, ibnd_node_t *node, ibnd_port_t *port)
 		ibnd_node_t *remnode;
 		ibnd_port_t *remport = port->remoteport;
 		if (!remport) {
-			fprintf(stderr, "ERROR: ibnd error; port ACTIVE "
-					"but no remote port! (Lights on, "
-					"nobody home?)\n");
+			printf("ERROR: ibnd error; port ACTIVE "
+				"but no remote port! (Lights on, "
+				"nobody home?)\n");
 			check_node_rc = 1;
 			goto invalid_active;
 		}
@@ -581,9 +592,9 @@ static void check_node(ibnd_node_t * node, void *user_data)
 		check_addrs(port);
 		if (!port_seen(node->guid, i)) {
 			check_port(remap, node, port);
-			mark_seen(node->guid, i);
+			mark_port_seen(node->guid, i);
 			if (port->remoteport) {
-				mark_seen(port->remoteport->node->guid,
+				mark_port_seen(port->remoteport->node->guid,
 					port->remoteport->portnum);
 				totals.num_ports++;
 			}
@@ -616,17 +627,44 @@ static int ignore_node(char *node_name, char *ignore_regex)
 	return (regexec(&exp, node_name, 0, NULL, 0) == 0);
 }
 
-typedef struct {
-	FILE *fp;
-	char *ignore_regex;
-	int print_missing;
-} print_node_data_t;
+static void mark_node_seen(print_node_data_t *data, uint64_t node_guid)
+{
+	guid_list_item_t *i = malloc(sizeof(*i));
+	if (i == NULL) {
+		fprintf(stderr, "ERROR: malloc failed\n");
+		return;
+	}
+	i->guid = node_guid;
+	data->visited_nodes = g_slist_append(data->visited_nodes, (gpointer)i);
+	data->vn_cnt++;
+}
+
+static int node_seen(print_node_data_t *data, uint64_t node_guid)
+{
+	int i = 0;
+	for (i = 0; i < data->vn_cnt; i++) {
+		gpointer t = g_slist_nth_data(data->visited_nodes, i);
+		if (((guid_list_item_t *)t)->guid == node_guid)
+			return (1);
+	}
+	return (0);
+}
+
+static void free_visited_nodes(print_node_data_t *data)
+{
+	if (!data->visited_nodes)
+		return;
+
+	g_slist_foreach(data->visited_nodes, free_node, NULL);
+	g_slist_free(data->visited_nodes);
+}
 
 static void print_node_xml(ibnd_node_t *node, void *ud)
 {
 	print_node_data_t *data = (print_node_data_t *)ud;
 	FILE *fp = data->fp;
 
+	int header = 0;
 	int i = 0;
 	char * node_name = remap_node_name(node_name_map,
 					node->guid,
@@ -635,13 +673,18 @@ static void print_node_xml(ibnd_node_t *node, void *ud)
 	if (ignore_node(node_name, data->ignore_regex))
 		goto ignore;
 
-	fprintf(fp, "\t<linklist name=\"%s\">\n", node_name);
 	for (i = 1; i <= node->numports; i++) {
 		if (node->ports[i] && node->ports[i]->remoteport) {
 			char *rem_name = remap_node_name(node_name_map,
 					node->ports[i]->remoteport->node->guid,
 					node->ports[i]->remoteport->node->nodedesc);
-			if (!ignore_node(rem_name, data->ignore_regex)) {
+			if (!ignore_node(rem_name, data->ignore_regex)
+			    && !node_seen(data,
+					node->ports[i]->remoteport->node->guid)) {
+				if (!header) {
+					fprintf(fp, "\t<linklist name=\"%s\">\n", node_name);
+					header = 1;
+				}
 				fprintf(fp, "\t\t<port num=\"%d\">", i);
 				fprintf(fp, "<r_port>%d</r_port>",
 					node->ports[i]->remoteport->portnum);
@@ -649,6 +692,10 @@ static void print_node_xml(ibnd_node_t *node, void *ud)
 				fprintf(fp, "</port>\n");
 			}
 		} else if (data->print_missing) {
+			if (!header) {
+				fprintf(fp, "\t<linklist name=\"%s\">\n", node_name);
+				header = 1;
+			}
 			fprintf(fp, "<!--\n");
 			fprintf(fp, "\t\t<port num=\"%d\">", i);
 			fprintf(fp, "<r_port>XXXXX</r_port>");
@@ -657,7 +704,10 @@ static void print_node_xml(ibnd_node_t *node, void *ud)
 			fprintf(fp, "-->\n");
 		}
 	}
-	fprintf(fp, "\t</linklist>\n");
+	if (header)
+		fprintf(fp, "\t</linklist>\n");
+
+	mark_node_seen(data, node->guid);
 
 ignore:
 	free(node_name);
@@ -670,6 +720,8 @@ int generate_from_fabric(ibnd_fabric_t *fabric, char *generate_file, nn_map_t *n
 	print_node_data_t data;
 	FILE *fp = fopen(generate_file, "w+");
 	node_name_map = name_map;
+
+	memset(&data, 0, sizeof(data));
 
 	if (!fp) {
 		fprintf(stderr, "Failed to open %s: %s\n", generate_file, strerror(errno));
@@ -689,6 +741,9 @@ int generate_from_fabric(ibnd_fabric_t *fabric, char *generate_file, nn_map_t *n
 	ibnd_iter_nodes_type(fabric, print_node_xml, IB_NODE_ROUTER, (void *)&data);
 
 	fprintf(fp, "</fabric>\n");
+
+	free_visited_nodes(&data);
+
 	return 0;
 }
 

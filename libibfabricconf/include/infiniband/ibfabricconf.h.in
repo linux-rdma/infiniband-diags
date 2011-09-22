@@ -34,6 +34,10 @@
 #ifndef _IBFABRICCONF_H_
 #define _IBFABRICCONF_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* These are temporary to get rid of ib_types.h dependancy */
 #define IB_LINK_WIDTH_ACTIVE_1X			1
 #define IB_LINK_WIDTH_ACTIVE_4X			2
@@ -104,6 +108,10 @@ int ibfc_prop_get_width(ibfc_prop_t *prop);
 
 char *ibfc_sprintf_prop(char ret[], unsigned n, ibfc_port_t *port);
 	/* returns "ret" or NULL on error */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _IBFABRICCONF_H_ */
 
