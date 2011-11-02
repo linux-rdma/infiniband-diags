@@ -11,14 +11,14 @@
 		"ibcore1 S111A", "ibcore1 S111B", etc.
 		"ibcore1 L101", "ibcore1 L102", "ibcore1 L103", etc.
 
-	<chassis name="ibcore1" model="QLogic_12800-360">
+	<chassis name="ibcore1" model="QLogic_12800-360-648p">
 	</chassis>
 
 	Example: define "ibcore1" renaming spine boards
 		default for remainging
 		"ibcore1 L101", "ibcore1 L102", "ibcore1 L103", etc.
 
-	<chassis name="ibcore1" model="QLogic_12800-360">
+	<chassis name="ibcore1" model="QLogic_12800-360-648p">
 		<node position="S111A">ibcore1 Spine 111A</node>
 		<node position="S111B">ibcore1 Spine 111B</node>
 		<node position="S113A">ibcore1 Spine 113A</node>
@@ -46,43 +46,43 @@
 
 	[name] should be replaced by the name you want specified
 
-	<node position="L101">[name]</node
-	<node position="L102">[name]</node
-	<node position="L103">[name]</node
-	<node position="L104">[name]</node
-	<node position="L105">[name]</node
-	<node position="L106">[name]</node
-	<node position="L107">[name]</node
-	<node position="L108">[name]</node
-	<node position="L109">[name]</node
-	<node position="L110">[name]</node
-	<node position="L119">[name]</node
-	<node position="L120">[name]</node
-	<node position="L121">[name]</node
-	<node position="L122">[name]</node
-	<node position="L123">[name]</node
-	<node position="L124">[name]</node
-	<node position="L125">[name]</node
-	<node position="L126">[name]</node
-	<node position="L127">[name]</node
-	<node position="L128">[name]</node
+	<node position="L101">[name]</node>
+	<node position="L102">[name]</node>
+	<node position="L103">[name]</node>
+	<node position="L104">[name]</node>
+	<node position="L105">[name]</node>
+	<node position="L106">[name]</node>
+	<node position="L107">[name]</node>
+	<node position="L108">[name]</node>
+	<node position="L109">[name]</node>
+	<node position="L110">[name]</node>
+	<node position="L119">[name]</node>
+	<node position="L120">[name]</node>
+	<node position="L121">[name]</node>
+	<node position="L122">[name]</node>
+	<node position="L123">[name]</node>
+	<node position="L124">[name]</node>
+	<node position="L125">[name]</node>
+	<node position="L126">[name]</node>
+	<node position="L127">[name]</node>
+	<node position="L128">[name]</node>
 
-	<node position="L201">[name]</node
-	<node position="L202">[name]</node
-	<node position="L203">[name]</node
-	<node position="L204">[name]</node
-	<node position="L205">[name]</node
-	<node position="L206">[name]</node
-	<node position="L207">[name]</node
-	<node position="L208">[name]</node
-	<node position="L219">[name]</node
-	<node position="L220">[name]</node
-	<node position="L221">[name]</node
-	<node position="L222">[name]</node
-	<node position="L223">[name]</node
-	<node position="L224">[name]</node
-	<node position="L225">[name]</node
-	<node position="L226">[name]</node
+	<node position="L201">[name]</node>
+	<node position="L202">[name]</node>
+	<node position="L203">[name]</node>
+	<node position="L204">[name]</node>
+	<node position="L205">[name]</node>
+	<node position="L206">[name]</node>
+	<node position="L207">[name]</node>
+	<node position="L208">[name]</node>
+	<node position="L219">[name]</node>
+	<node position="L220">[name]</node>
+	<node position="L221">[name]</node>
+	<node position="L222">[name]</node>
+	<node position="L223">[name]</node>
+	<node position="L224">[name]</node>
+	<node position="L225">[name]</node>
+	<node position="L226">[name]</node>
 
 	<node position="S111A">[name]</node>
 	<node position="S111B">[name]</node>
@@ -102,7 +102,7 @@
 	<node position="S215A">[name]</node>
 	<node position="S215B">[name]</node>
 	<node position="S217A">[name]</node>
-	<node position="S217B">[name]<</node>
+	<node position="S217B">[name]</node>
 -->
 
 	<linklist position="S217A">
