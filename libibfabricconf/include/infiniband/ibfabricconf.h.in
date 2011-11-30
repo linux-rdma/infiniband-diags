@@ -38,16 +38,6 @@
 extern "C" {
 #endif
 
-/* These are temporary to get rid of ib_types.h dependancy */
-#define IB_LINK_WIDTH_ACTIVE_1X			1
-#define IB_LINK_WIDTH_ACTIVE_4X			2
-#define IB_LINK_WIDTH_ACTIVE_8X			4
-#define IB_LINK_WIDTH_ACTIVE_12X 		8
-#define IB_LINK_SPEED_ACTIVE_2_5		1
-#define IB_LINK_SPEED_ACTIVE_5			2
-#define IB_LINK_SPEED_ACTIVE_10			4
-
-
 #define IBFC_CONFIG_DIR "@IBDIAG_CONFIG_PATH@"
 #define IBFC_CHASSIS_CONF_DIR IBFC_CONFIG_DIR"/chassis_fabricconfs"
 #define IBFC_DEF_CONFIG "@IBDIAG_CONFIG_PATH@/ibfabricconf.xml"

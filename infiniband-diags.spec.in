@@ -93,6 +93,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
+%{_sbindir}/ibparsefabricconf
+%{_mandir}/man8/ibparsefabricconf.8.gz
 %{_sbindir}/ibfindnodesusing.pl
 %{_mandir}/man8/ibfindnodesusing.8.gz
 %{_sbindir}/ibidsverify.pl

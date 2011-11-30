@@ -38,6 +38,7 @@
 #include <string.h>
 #include <iba/ib_types.h>
 #include <infiniband/ibfabricconf.h>
+#include "ibfabricconf-int.h"
 
 char *fabricconf_file = NULL;
 char *argv0 = NULL;

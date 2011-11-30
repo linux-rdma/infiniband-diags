@@ -15,7 +15,7 @@ else
 libibfabricconf_version_script =
 endif
 
-libibfabricconf_la_SOURCES = src/ibfabricconf.c
+libibfabricconf_la_SOURCES = src/ibfabricconf.c src/ibfabricconf-int.h
 libibfabricconf_la_CFLAGS = $(XML_CFLAGS) -Wall $(DBGFLAGS)
 libibfabricconf_la_LDFLAGS = -version-info $(ibfabricconf_api_version) \
 	-export-dynamic $(libibfabricconf_version_script) \

@@ -40,6 +40,7 @@
 #include <assert.h>
 #include <limits.h>
 #include <infiniband/ibfabricconf.h>
+#include "ibfabricconf-int.h"
 
 #ifndef LIBXML_TREE_ENABLED
 #error "libxml error: Tree support not compiled in"
