@@ -49,6 +49,7 @@ extern int ibd_ca_port;
 extern enum MAD_DEST ibd_dest_type;
 extern ib_portid_t *ibd_sm_id;
 extern int ibd_timeout;
+extern uint32_t ibd_ibnetdisc_flags;
 
 /*========================================================*/
 /*                External interface                      */
@@ -92,6 +93,8 @@ extern void iberror(const char *fn, char *msg, ...);
  * as per PortCounters[Extended]
  */
 extern char *conv_cnt_human_readable(uint64_t val64, float *val, int data);
+
+int is_mlnx_ext_port_info_supported(uint32_t devid);
 
 /* define an SA query structure to be common
  * This is by no means optimal but it moves the saquery functionality out of
