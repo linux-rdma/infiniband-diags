@@ -153,7 +153,7 @@ distclean-local:
 	$(top_srcdir)/doc/generate clean
 
 dist-hook:
-	if [ -x $(top_srcdir)/gen_chlog.sh ] ; then \
+	if [ -x $(top_srcdir)/gen_chlog.sh -a -d $(top_srcdir)/.git ] ; then \
 		$(top_srcdir)/gen_chlog.sh > $(distdir)/ChangeLog ; \
 	fi
 

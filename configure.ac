@@ -7,7 +7,7 @@ AC_CONFIG_MACRO_DIR(config)
 AM_CONFIG_HEADER(config.h)
 AM_INIT_AUTOMAKE([foreign])
 
-AC_SUBST(RELEASE, ${RELEASE:-unknown})
+AC_SUBST(RELEASE, ${RELEASE:-1})
 AC_SUBST(TARBALL, ${TARBALL:-${PACKAGE}-${VERSION}.tar.gz})
 
 dnl support debug mode
