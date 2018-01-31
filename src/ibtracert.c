@@ -67,7 +67,9 @@ static char *node_type_str[] = {
 static int timeout = 0;		/* ms */
 static int force;
 static FILE *f;
+static FILE *lid_fd;
 
+static char *lid_file = NULL;
 static char *node_name_map_file = NULL;
 static nn_map_t *node_name_map = NULL;
 
@@ -760,6 +762,9 @@ static int process_opt(void *context, int ch, char *optarg)
 	case 1:
 		node_name_map_file = strdup(optarg);
 		break;
+	case 2:
+		lid_file = strdup(optarg);
+		break;
 	case 'm':
 		multicast++;
 		mlid = strtoul(optarg, 0, 0);
@@ -778,6 +783,9 @@ static int process_opt(void *context, int ch, char *optarg)
 
 int main(int argc, char **argv)
 {
+	char *srcid = NULL;
+	char *dstid = NULL;
+	int lidfd_res;
 	int mgmt_classes[3] =
 	    { IB_SMI_CLASS, IB_SMI_DIRECT_CLASS, IB_SA_CLASS };
 	ib_portid_t my_portid = { 0 };
@@ -790,6 +798,7 @@ int main(int argc, char **argv)
 		{"no_info", 'n', 0, NULL, "simple format"},
 		{"mlid", 'm', 1, "<mlid>", "multicast trace of the mlid"},
 		{"node-name-map", 1, 1, "<file>", "node name map file"},
+		{"lid-file", 2, 1, "<file>", "lid file"},
 		{0}
 	};
 	char usage_args[] = "<src-addr> <dest-addr>";
@@ -811,8 +820,28 @@ int main(int argc, char **argv)
 	argc -= optind;
 	argv += optind;
 
-	if (argc < 2)
+	if (argc < 2 && lid_file[0] == '\0') 
 		ibdiag_show_usage();
+
+	if (argc == 2) {
+		srcid = strdup(argv[0]);
+		dstid = strdup(argv[1]);
+     	}
+
+	if (lid_file != NULL) {
+		lid_fd = fopen(lid_file, "r");
+		if (!lid_fd) {
+			IBEXIT("cannot open lid-file %s", lid_file);
+		} else {
+			srcid = (char*) malloc(6*sizeof(char));
+			dstid = (char*) malloc(6*sizeof(char));
+			lidfd_res = fscanf(lid_fd, "%s %s", srcid, dstid);
+			if (lidfd_res != 2) {
+				IBEXIT("lid-file empty or contains bad data, %i, %s",lidfd_res,lid_file);
+
+			}
+		}
+	}
 
 	if (ibd_timeout)
 		timeout = ibd_timeout;
@@ -825,57 +854,76 @@ int main(int argc, char **argv)
 
 	node_name_map = open_node_name_map(node_name_map_file);
 
-	if (resolve_portid_str(ibd_ca, ibd_ca_port, &src_portid, argv[0],
+	while (srcid[0] != '\0' && dstid != '\0') {
+
+		if (resolve_portid_str(ibd_ca, ibd_ca_port, &src_portid, srcid,
 			       ibd_dest_type, ibd_sm_id, srcport) < 0)
-		IBEXIT("can't resolve source port %s", argv[0]);
+			IBEXIT("can't resolve source port %s", argv[0]);
 
-	if (resolve_portid_str(ibd_ca, ibd_ca_port, &dest_portid, argv[1],
+		if (resolve_portid_str(ibd_ca, ibd_ca_port, &dest_portid, dstid,
 			       ibd_dest_type, ibd_sm_id, srcport) < 0)
-		IBEXIT("can't resolve destination port %s", argv[1]);
+			IBEXIT("can't resolve destination port %s", argv[1]);
 
-	if (ibd_dest_type == IB_DEST_DRPATH) {
-		if (resolve_lid(&src_portid, NULL) < 0)
-			IBEXIT("cannot resolve lid for port \'%s\'",
-				portid2str(&src_portid));
-		if (resolve_lid(&dest_portid, NULL) < 0)
-			IBEXIT("cannot resolve lid for port \'%s\'",
-				portid2str(&dest_portid));
+		if (ibd_dest_type == IB_DEST_DRPATH) {
+			if (resolve_lid(&src_portid, NULL) < 0)
+				IBEXIT("cannot resolve lid for port \'%s\'",
+					portid2str(&src_portid));
+			if (resolve_lid(&dest_portid, NULL) < 0)
+				IBEXIT("cannot resolve lid for port \'%s\'",
+					portid2str(&dest_portid));
+		}
+
+		if (dest_portid.lid == 0 || src_portid.lid == 0) {
+			IBWARN("bad src/dest lid");
+			ibdiag_show_usage();
+		}
+
+		if (ibd_dest_type != IB_DEST_DRPATH) {
+			/* first find a direct path to the src port */
+			if (find_route(&my_portid, &src_portid, 0) < 0)
+				IBEXIT("can't find a route to the src port");
+
+			src_portid = my_portid;
+		}
+
+		if (!multicast) {
+			if (find_route(&src_portid, &dest_portid, dumplevel) < 0)
+				IBEXIT("can't find a route from src to dest");
+		} else {
+			if (mlid < 0xc000)
+				IBWARN("invalid MLID; must be 0xc000 or larger");
+
+			if (!(target_portguid = find_target_portguid(&dest_portid)))
+				IBEXIT("can't reach target lid %d", dest_portid.lid);
+
+			if (!(endnode = find_mcpath(&src_portid, mlid)))
+				IBEXIT("can't find a multicast route from src to dest");
+
+			/* dump multicast path */
+			dump_mcpath(endnode, dumplevel);
+		}
+
+		if (lid_fd) {
+			my_portid.drpath.cnt = 0;
+			src_portid.drpath.cnt = 0;
+			if (fscanf(lid_fd, "%s %s", srcid, dstid) != 2) {
+				srcid[0] = '\0';
+				dstid[0] = '\0';
+			}
+		} else {
+			srcid[0] = '\0';
+			dstid[0] = '\0';
+		}
+
 	}
-
-	if (dest_portid.lid == 0 || src_portid.lid == 0) {
-		IBWARN("bad src/dest lid");
-		ibdiag_show_usage();
-	}
-
-	if (ibd_dest_type != IB_DEST_DRPATH) {
-		/* first find a direct path to the src port */
-		if (find_route(&my_portid, &src_portid, 0) < 0)
-			IBEXIT("can't find a route to the src port");
-
-		src_portid = my_portid;
-	}
-
-	if (!multicast) {
-		if (find_route(&src_portid, &dest_portid, dumplevel) < 0)
-			IBEXIT("can't find a route from src to dest");
-		exit(0);
-	} else {
-		if (mlid < 0xc000)
-			IBWARN("invalid MLID; must be 0xc000 or larger");
-	}
-
-	if (!(target_portguid = find_target_portguid(&dest_portid)))
-		IBEXIT("can't reach target lid %d", dest_portid.lid);
-
-	if (!(endnode = find_mcpath(&src_portid, mlid)))
-		IBEXIT("can't find a multicast route from src to dest");
-
-	/* dump multicast path */
-	dump_mcpath(endnode, dumplevel);
-
+	
+/*
+ * end of loop
+*/
 	close_node_name_map(node_name_map);
 
 	mad_rpc_close_port(srcport);
 
 	exit(0);
 }
+
