@@ -769,9 +769,6 @@ static int process_opt(void *context, int ch, char *optarg)
 		if (ports_file == 0)
 			IBEXIT("out of memory, strdup for ports_file name failed");
 		break;
-	case 2:
-		lid_file = strdup(optarg);
-		break;
 	case 'm':
 		multicast++;
 		mlid = strtoul(optarg, 0, 0);
