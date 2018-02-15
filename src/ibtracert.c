@@ -67,9 +67,9 @@ static char *node_type_str[] = {
 static int timeout = 0;		/* ms */
 static int force;
 static FILE *f;
-static FILE *lid_fd;
+static FILE *ports_fd;
 
-static char *lid_file = NULL;
+static char *ports_file = NULL;
 static char *node_name_map_file = NULL;
 static nn_map_t *node_name_map = NULL;
 
@@ -761,6 +761,13 @@ static int process_opt(void *context, int ch, char *optarg)
 	switch (ch) {
 	case 1:
 		node_name_map_file = strdup(optarg);
+		if (node_name_map_file == 0)
+			IBEXIT("out of memory, strdup for node_name_map_file name failed");
+		break;
+	case 2:
+		ports_file = strdup(optarg);
+		if (ports_file == 0)
+			IBEXIT("out of memory, strdup for ports_file name failed");
 		break;
 	case 2:
 		lid_file = strdup(optarg);
@@ -785,7 +792,9 @@ int main(int argc, char **argv)
 {
 	char *srcid = NULL;
 	char *dstid = NULL;
-	int lidfd_res;
+	char ports_buffer[45];
+	int num_port_pairs = 0;
+	int portsfd_res;
 	int mgmt_classes[3] =
 	    { IB_SMI_CLASS, IB_SMI_DIRECT_CLASS, IB_SA_CLASS };
 	ib_portid_t my_portid = { 0 };
@@ -798,7 +807,7 @@ int main(int argc, char **argv)
 		{"no_info", 'n', 0, NULL, "simple format"},
 		{"mlid", 'm', 1, "<mlid>", "multicast trace of the mlid"},
 		{"node-name-map", 1, 1, "<file>", "node name map file"},
-		{"lid-file", 2, 1, "<file>", "lid file"},
+		{"ports-file", 2, 1, "<file>", "ports file"},
 		{0}
 	};
 	char usage_args[] = "<src-addr> <dest-addr>";
@@ -820,27 +829,33 @@ int main(int argc, char **argv)
 	argc -= optind;
 	argv += optind;
 
-	if (argc < 2 && lid_file[0] == '\0') 
+	if (argc < 2 && ports_file == NULL) 
 		ibdiag_show_usage();
 
 	if (argc == 2) {
 		srcid = strdup(argv[0]);
+		if (srcid == 0)
+			IBEXIT("out of memory, strdup for srcid failed");
 		dstid = strdup(argv[1]);
+		if (dstid == 0)
+			IBEXIT("out of memory, strdup for dstid failed");
      	}
 
-	if (lid_file != NULL) {
-		lid_fd = fopen(lid_file, "r");
-		if (!lid_fd) {
-			IBEXIT("cannot open lid-file %s", lid_file);
-		} else {
-			srcid = (char*) malloc(6*sizeof(char));
-			dstid = (char*) malloc(6*sizeof(char));
-			lidfd_res = fscanf(lid_fd, "%s %s", srcid, dstid);
-			if (lidfd_res != 2) {
-				IBEXIT("lid-file empty or contains bad data, %i, %s",lidfd_res,lid_file);
-
-			}
-		}
+	if (ports_file != NULL) {
+		ports_fd = fopen(ports_file, "r");
+		if (!ports_fd)
+			IBEXIT("cannot open ports-file %s", ports_file);
+        	if (!fgets(ports_buffer, sizeof(ports_buffer), ports_fd)) 
+			IBEXIT("read of ports-file, %s, failed", ports_file);
+		srcid = (char*) malloc(20*sizeof(char));
+		if ( srcid == NULL) 
+			IBEXIT("malloc for srcid failed");
+		dstid = (char*) malloc(20*sizeof(char));
+		if ( dstid == NULL) 
+			IBEXIT("malloc for dstid failed");
+		if ( sscanf(ports_buffer, "%s %s", srcid, dstid) != 2 )
+			IBEXIT("ports-file, %s, empty or has bad data", ports_file);
+		num_port_pairs++;
 	}
 
 	if (ibd_timeout)
@@ -903,12 +918,18 @@ int main(int argc, char **argv)
 			dump_mcpath(endnode, dumplevel);
 		}
 
-		if (lid_fd) {
+		if (ports_fd) {
 			my_portid.drpath.cnt = 0;
 			src_portid.drpath.cnt = 0;
-			if (fscanf(lid_fd, "%s %s", srcid, dstid) != 2) {
+     	   		if (fgets(ports_buffer, sizeof(ports_buffer), ports_fd)) {
+				num_port_pairs++;
+                		if ( sscanf(ports_buffer, "%s %s", srcid, dstid) != 2 ) 
+					IBEXIT("bad data read from ports_file, %s, at line %i", ports_file, num_port_pairs);
+			} else {
 				srcid[0] = '\0';
 				dstid[0] = '\0';
+				fclose(ports_fd);
+				fprintf(stderr, "%i port pairs read from ports-file, %s\n", num_port_pairs, ports_file);
 			}
 		} else {
 			srcid[0] = '\0';
@@ -923,6 +944,7 @@ int main(int argc, char **argv)
 	close_node_name_map(node_name_map);
 
 	mad_rpc_close_port(srcport);
+
 
 	exit(0);
 }
