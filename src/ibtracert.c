@@ -761,12 +761,12 @@ static int process_opt(void *context, int ch, char *optarg)
 	switch (ch) {
 	case 1:
 		node_name_map_file = strdup(optarg);
-		if (node_name_map_file == 0)
+		if (node_name_map_file == NULL)
 			IBEXIT("out of memory, strdup for node_name_map_file name failed");
 		break;
 	case 2:
 		ports_file = strdup(optarg);
-		if (ports_file == 0)
+		if (ports_file == NULL)
 			IBEXIT("out of memory, strdup for ports_file name failed");
 		break;
 	case 'm':
@@ -804,7 +804,7 @@ int main(int argc, char **argv)
 		{"no_info", 'n', 0, NULL, "simple format"},
 		{"mlid", 'm', 1, "<mlid>", "multicast trace of the mlid"},
 		{"node-name-map", 1, 1, "<file>", "node name map file"},
-		{"ports-file", 2, 1, "<file>", "ports file"},
+		{"ports-file", 2, 1, "<file>", "ports file containing either LID or GUID pairs"},
 		{0}
 	};
 	char usage_args[] = "<src-addr> <dest-addr>";
@@ -831,10 +831,10 @@ int main(int argc, char **argv)
 
 	if (argc == 2) {
 		srcid = strdup(argv[0]);
-		if (srcid == 0)
+		if (srcid == NULL)
 			IBEXIT("out of memory, strdup for srcid failed");
 		dstid = strdup(argv[1]);
-		if (dstid == 0)
+		if (dstid == NULL)
 			IBEXIT("out of memory, strdup for dstid failed");
      	}
 
@@ -870,11 +870,11 @@ int main(int argc, char **argv)
 
 		if (resolve_portid_str(ibd_ca, ibd_ca_port, &src_portid, srcid,
 			       ibd_dest_type, ibd_sm_id, srcport) < 0)
-			IBEXIT("can't resolve source port %s", argv[0]);
+			IBEXIT("can't resolve source port %s", srcid);
 
 		if (resolve_portid_str(ibd_ca, ibd_ca_port, &dest_portid, dstid,
 			       ibd_dest_type, ibd_sm_id, srcport) < 0)
-			IBEXIT("can't resolve destination port %s", argv[1]);
+			IBEXIT("can't resolve destination port %s", dstid);
 
 		if (ibd_dest_type == IB_DEST_DRPATH) {
 			if (resolve_lid(&src_portid, NULL) < 0)
