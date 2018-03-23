@@ -913,7 +913,7 @@ int main(int argc, char **argv)
 /* single call to get_route function if lids on command line */
 
 	if (ports_file == NULL) {
-		if (get_route(argv[0],argv[1]) != 0) 
+		if (get_route(argv[0], argv[1]) != 0) 
 			IBEXIT("Failed to get route information");
 
 /* multiple calls to get_route function when reading in a file */
@@ -934,7 +934,7 @@ int main(int argc, char **argv)
                         		IBEXIT("ports-file, %s, at line %i contains bad data",
 						ports_file, line_count);
 					num_port_pairs++;
-				if (get_route(srcbuf,dstbuf) != 0)
+				if (get_route(srcbuf, dstbuf) != 0)
 					IBEXIT("Failed to get route information at line %i",
 						line_count);
 			}
