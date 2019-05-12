@@ -26,37 +26,50 @@ Release notes 2.0.0 => 2.1.0
    5) Bug Fixes
 
 
-Authors since 2.0.0
+Authors since 2.1.0
 
-
-aecbb6f06888  :  Ira Weiny  :  infiniband-diags: Update default man pages
-28b29a03d094  :  Ira Weiny  :  infiniband-diags: Update iblinkinfo --diffcheck options
-9f44ab3daafa  :  Ira Weiny  :  infiniband-diags: Move deprecated tools to compat rpm
-
-7d5e0442c2a1  :  Hal Rosenstock  :  Add latest new device IDs to device white lists
-5f9a632e88aa  :  Hal Rosenstock  :  ibtracert.c: Better ports file parsing
-2d113986fd74  :  Hal Rosenstock  :  Fix some formatting
-5b5642437afe  :  Hal Rosenstock  :  smpdump.c: Print number of bytes returned by umad_recv
-de6c39715552  :  Hal Rosenstock  :  Add additional ConnectX-5 device ID to white lists
-70cf023a35fa  :  Hal Rosenstock  :  smpdump.c: Minor fix for when umad_recv fails
-26aad53c06d7  :  Hal Rosenstock  :  Add support for HDR RS-FEC
-2583fe9d93e2  :  Hal Rosenstock  :  ib[netdiscover portstate].c: Add HDR support
-f3940b2badad  :  Hal Rosenstock  :  libibmad: Add support for HDRFECMode fields in PortInfoExtended attribute
-93e24484e427  :  Hal Rosenstock  :  libibmad/dump.c: Add HDR support for PortInfo LinkSpeedExt* fields
-2e2f55709466  :  Hal Rosenstock  :  ibdiag_common.c: In is_port_info_extended_supported, query PortInfo for port, 0 when 
-1957468b572d  :  Hal Rosenstock  :  ibdiag_common.c: In is_port_info_extended_supported, query PortInfo for port 0 when n
-0a5b4970e0f9  :  Hal Rosenstock  :  Add support for QP1Dropped counter in PortCounters attribute
-93cd96c5c9cc  :  Hal Rosenstock  :  libibmad: Support the decode of PortInfo:CapabilityMask2
-5416bbb44e91  :  Hal Rosenstock  :  Support 2x link widths
-5aaf540fbde9  :  Hal Rosenstock  :  libibmad/fields.c: PortInfo:McastPkeyTrapSuppressionEnabled is 2 bits in IBA 1.3
-33e318120ed6  :  Hal Rosenstock  :  ibcc[config query].c: Make SwitchPortCongestionSetting IBA 1.3 compliant
-
-1dd7c112ac4c  :  Susan K. Coulter  :  ibtracert: Add ability to specify a file of port pairs
-9294833bd161  :  Susan K. Coulter  :  ibtracert.c: Moved the getting of routes into internal get_route function
-2ffe4ec09f0d  :  Susan K. Coulter  :  Added check for successful strdup of node_name_map_file
-
-65fac7cad9e4  :  Oded Nissan  :  ibqueryerrors.c: Add support for additional counters in PortCountersExtended
-
-91630fc4e298  :  Benjamin Drung  :  Fix undefined bi macro man page warning
-0edbdd74cd89  :  Benjamin Drung  :  Fix bad whatis entries in man pages
+267969c19dca  :  Jason Gunthorpe  :  ibdiags: Avoid using the same variable as big and little endian
+36742a3bccb9  :  Jason Gunthorpe  :  ibdiags: Fix incorrect forming of comp_mask
+eddc3e7d309e  :  Jason Gunthorpe  :  ibdiags: Fix extra swap on error print
+c993deca2ba1  :  Jason Gunthorpe  :  ibdiags: Fix missing swaps on remap_node_name
+16168163317b  :  Jason Gunthorpe  :  ibdiags: Use cl_qmap instead of glib hashtable
+fef813c05611  :  Cyrille Verrier  :  RPM spec: Download source from github.com/linux-rdma/infiniband-diags
+66a7e925a15f  :  Jason Gunthorpe  :  ibdiags: Add __be* annotations to types
+42d22821ece2  :  Jason Gunthorpe  :  ibdiags: Add missing ULL on large constants
+c6eb39614d32  :  Jason Gunthorpe  :  ibdiags: Add missing endian conversions on constants
+ba9e4e0d83ad  :  Jason Gunthorpe  :  ibdiags: Removing unneeded casting around endian conversions
+abe3488b3ddb  :  Jason Gunthorpe  :  ibdiags: Fix reversed endian swap direction
+c5489ce9fe07  :  Jason Gunthorpe  :  ibdiags: Use NULL instead of 0 in all places where it used as a pointer
+511eaed058ce  :  Jason Gunthorpe  :  ibdiags: Use PRIx64 when printing uint64_t
+c9d98a6ac045  :  Jason Gunthorpe  :  ibdiags: Add missing static to variables
+7735a8795120  :  Jason Gunthorpe  :  ibdiags: Remove always true test
+35fba200e833  :  Jason Gunthorpe  :  ibdiags: Mark functions taking format strings with attribute format
+552e22438e95  :  Jason Gunthorpe  :  ibdiags: Do not use optarg for process_opt
+24ebfd5857a6  :  Jason Gunthorpe  :  ibdiags: Remove IN/OUT notations
+f973fda0a755  :  Jason Gunthorpe  :  ibdiags: Replace ib_netXX_t with __beXX
+176d9de7605c  :  Jason Gunthorpe  :  ibdiags/ibping: Use clock_gettime instead of complib
+b7fb37e2fa0e  :  Ira Weiny  :  ibdiags: Replace cl_hton with htobe
+b8b5393762b8  :  Jason Gunthorpe  :  ibdiags: Replace cl_hton with htobe
+c995abe807cd  :  Jason Gunthorpe  :  ibdiags: Replace cl_ntoh with betoh
+45ba74fd74a6  :  Mark Haywood  :  ibdiags: Fix buffer overflow in sa_report_err()
+90f328abba56  :  Mark Haywood  :  ibdiags: Fix buffer overflow in sa_report_err()
+1398c31cb5df  :  Ira Weiny  :  infiniband-diags: Remove snprintf warnings
+11edb997a23a  :  Jason Gunthorpe  :  ibdiags/ibtracert: Remove srcport parameter
+78ce6b01a7f8  :  Jason Gunthorpe  :  ibdiags/iblinkinfo: Move guid globals to a stuct
+09f10ecbfbdc  :  Jason Gunthorpe  :  ibdiags/perfquery: Move many of the globals into a struct
+cd1b0d6da91e  :  Jason Gunthorpe  :  ibdiags: Rename local variables to avoid shadow
+779b5d76a068  :  Jason Gunthorpe  :  ibdiags: Remove parameters that are always passed as their global values
+187b3faa318d  :  Jason Gunthorpe  :  ibdiags: Remove unneeded prototype
+ebc33addce8a  :  Jason Gunthorpe  :  ibdiags: Use a static inline for the empty debug
+e98bef85a90f  :  Jason Gunthorpe  :  ibdiag: Use modern C function declarations
+09922b359ce6  :  Jason Gunthorpe  :  ibdiags: Make functions used in only one file static
+dd5365dbb2e6  :  Jason Gunthorpe  :  ibdiags: Put the prototype for mlnx_ext_port_infor_err in a header
+b90d9b39c207  :  Jason Gunthorpe  :  libibmad: Use {} instead of {0}
+54b6fe378289  :  Jason Gunthorpe  :  ibdiags: Use const char when appropriate
+4517747c2ad9  :  Jason Gunthorpe  :  ibdiags: Remove unused functions
+548593317357  :  Jason Gunthorpe  :  libibmad: Remove madrpc_def_timeout
+5e5657c05380  :  Hal Rosenstock  :  Add latest Bull device IDs to device white lists
+eda517d6b731  :  Cyrille Verrier  :  Update README: list python dependencies (docutils)
+2138894e214c  :  Cyrille Verrier  :  Update .gitignore
+48baa814d842  :  Hal Rosenstock  :  Add latest new device ID to device white lists
 
